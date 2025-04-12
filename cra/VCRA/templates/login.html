@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicEYE-Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg flex w-full max-w-4xl overflow-hidden">
+        <!-- Left Section -->
+        <div class="w-1/2 bg-white text-white flex flex-col justify-center items-center p-8">
+            <h1 class="text-3xl font-bold mb-4 text-blue-600">Welcome to CivicEYE!</h1>
+            <p class="text-lg text-center text-gray-600">Your platform to report, track, and resolve public issues with ease.</p>
+            <img src="https://static.vecteezy.com/system/resources/previews/035/851/744/large_2x/ai-generated-a-person-wearing-a-headset-and-talking-on-the-phone-surrounded-by-computers-in-a-call-center-free-photo.jpg" alt="Welcome Image" class="rounded-lg">
+        </div>
+        <!-- Right Section -->
+        <div class="w-1/2 p-8">
+            <h2 class="text-2xl font-bold mb-4 text-blue-600">Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 font-medium">Email</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 font-medium">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex justify-between items-center mb-4">
+                    <a href="#" class="text-blue-500 hover:underline">Forgot Password?</a>
+                </div>
+                <a href="{% url 'homelog' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</a>
+            </form>
+            <p class="mt-4 text-center text-gray-600">
+                Don't have an account? <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Sign Up</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

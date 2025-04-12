@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicEYE User Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center text-2xl font-semibold">
+                <img src="https://static.vecteezy.com/system/resources/previews/041/933/147/large_2x/ai-generated-wall-mount-cctv-security-camera-isolated-on-transparent-background-free-png.png" class="w-6 h-6 mr-2" alt="Logo" />
+                <span class="text-gray-800">Civic</span><span class="text-sky-500">EYE</span>
+              </div>
+            <!-- Menu -->
+            <div class="flex space-x-10 text-sm font-medium text-gray-700">
+                <a href="#" class="hover:text-sky-500">Home</a>
+                <a href="#" class="hover:text-sky-500">My Complaints</a>
+                <a href="#" class="hover:text-sky-500">About</a>
+                <a href="#" class="hover:text-sky-500">Contact</a>
+            </div>
+            <!-- User Profile -->
+            <div class="relative group">
+                <button class="flex items-center space-x-1 bg-white border border-gray-300 rounded-full px-3 py-1 hover:shadow focus:outline-none">
+                  <img src="https://img.icons8.com/ios-filled/20/40C4FF/user.png" alt="User" class="w-5 h-5" />
+                  <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5.25 7.5L10 12.25L14.75 7.5H5.25Z" />
+                  </svg>
+                </button>
+            
+                <!-- Dropdown Menu -->
+                <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
+                  <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+                  <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Delete Account</a>
+                  <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
+                </div>
+              </div>
+        </div>
+    </nav>
+
+    <!-- Banner Section -->
+    <section class="bg-blue-600 text-white py-16 text-center">
+        <h1 class="text-4xl font-bold mb-4">Make Your Voice Heard!</h1>
+        <p class="text-xl mb-6">Register complaints, view reports, and bring change to your community.</p>
+    </section>
+
+    <!-- Register Complaints Section -->
+    <section class="py-10 bg-white">
+        <div class="max-w-5xl mx-auto text-center border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h2 class="text-xl font-semibold mb-6">Register Complaints</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+            <!-- Waste Dumping -->
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
+              <img src="https://img.icons8.com/ios-filled/50/000000/delete-trash.png" alt="Waste Dumping" class="w-8 h-8" />
+              <p class="text-sm font-medium text-gray-800">Waste Dumping</p>
+            </div>
+      
+            <!-- Public Nuisance -->
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
+              <img src="https://img.icons8.com/ios-filled/50/000000/error.png" alt="Public Nuisance" class="w-8 h-8" />
+              <p class="text-sm font-medium text-gray-800">Public nuisance</p>
+            </div>
+      
+            <!-- Traffic Violations -->
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
+              <img src="https://img.icons8.com/ios-filled/50/000000/traffic-light.png" alt="Traffic Violations" class="w-8 h-8" />
+              <p class="text-sm font-medium text-gray-800">Traffic violations</p>
+            </div>
+      
+            <!-- Others -->
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
+              <img src="https://img.icons8.com/ios-filled/50/000000/document--v1.png" alt="Others" class="w-8 h-8" />
+              <p class="text-sm font-medium text-gray-800">Others</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- Complaint Reports Section -->
+    <section class="py-10 bg-white text-center">
+        <h2 class="text-lg font-semibold mb-8">Complaint Reports</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      
+          <!-- Complaints Registered -->
+          <div class="bg-white shadow-md rounded-xl p-6">
+            <div class="flex justify-center mb-2">
+              <img src="https://img.icons8.com/ios-filled/50/000000/ok.png" class="w-6 h-6" />
+            </div>
+            <p class="text-md font-medium">Complaints registered</p>
+            <p class="text-2xl font-semibold mt-2 count-to" data-target="1002">0</p>
+          </div>
+      
+          <!-- Reports Filed -->
+          <div class="bg-white shadow-md rounded-xl p-6">
+            <div class="flex justify-center mb-2">
+              <img src="https://img.icons8.com/ios-filled/50/000000/topic.png" class="w-6 h-6" />
+            </div>
+            <p class="text-md font-medium">Reports filed</p>
+            <p class="text-2xl font-semibold mt-2 count-to" data-target="992">0</p>
+          </div>
+      
+          <!-- Rewards Distributed -->
+          <div class="bg-white shadow-md rounded-xl p-6">
+            <div class="flex justify-center mb-2">
+              <img src="https://img.icons8.com/ios-filled/50/000000/prize.png" class="w-6 h-6" />
+            </div>
+            <p class="text-md font-medium">Rewards distributed</p>
+            <p class="text-2xl font-semibold mt-2 count-to" data-target="886">0</p>
+          </div>
+      
+        </div>
+      </section>
+      
+
+    <!-- What We Do Section -->
+    <section class="py-10 bg-white text-center">
+        <h2 class="text-2xl font-semibold mb-8">What we do</h2>
+      
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+          
+          <!-- Step 1 -->
+          <div class="border-2 border-sky-400 rounded-md p-6 shadow-sm">
+            <p class="text-sm text-gray-700">You Register the Complaint</p>
+          </div>
+      
+          <!-- Step 2 -->
+          <div class="border-2 border-sky-400 rounded-md p-6 shadow-sm">
+            <p class="text-sm text-gray-700">
+              Our Team Verifies the Complaint and shares it <br />
+              to the responsible authorities
+            </p>
+          </div>
+      
+          <!-- Step 3 -->
+          <div class="border-2 border-sky-400 rounded-md p-6 shadow-sm">
+            <p class="text-sm text-gray-700">
+              The responsible authorities <br />
+              processes the complaint.
+            </p>
+          </div>
+      
+          <!-- Step 4 -->
+          <div class="border-2 border-sky-400 rounded-md p-6 shadow-sm">
+            <p class="text-sm text-gray-700">
+              Your Incentive is <br />
+              provided once the <br />
+              complaint is processed
+            </p>
+          </div>
+      
+        </div>
+      </section>
+      
+
+    <!-- Testimonials Section -->
+    <!-- Include Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<section class="py-10 bg-white text-center" x-data="testimonialSlider()">
+  <h2 class="text-2xl font-semibold mb-8">What our users have to say</h2>
+
+  <!-- Testimonials Carousel -->
+  <div class="flex items-center justify-center space-x-4 mb-10">
+    
+    <!-- Left Arrow -->
+    <button @click="prev" class="text-2xl font-bold px-2">&lt;</button>
+
+    <!-- Testimonial Card -->
+    <template x-for="(testimonial, index) in visibleTestimonials" :key="index">
+      <div class="w-64 bg-white shadow-md p-4 rounded-md">
+        <div class="flex items-start space-x-4">
+          <img :src="testimonial.image" alt="user" class="w-12 h-12 rounded-full object-cover" />
+          <div class="text-left">
+            <p class="text-sm font-medium" x-text="testimonial.title"></p>
+            <p class="text-xs text-gray-600" x-text="testimonial.description"></p>
+            <p class="mt-2 font-semibold text-sm" x-text="testimonial.name"></p>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Right Arrow -->
+    <button @click="next" class="text-2xl font-bold px-2">&gt;</button>
+  </div>
+
+  <!-- Feedback Submission -->
+  <div class="flex flex-col items-center space-y-4">
+    <form class="w-full max-w-xl">
+      <textarea placeholder="Write your feedback" class="w-full border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none h-32"></textarea>
+      <div class="flex justify-end mt-2">
+        <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white text-sm px-4 py-2 rounded-md">Submit</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Alpine.js Slider Logic -->
+<script>
+function testimonialSlider() {
+  return {
+    currentIndex: 0,
+    testimonials: [
+      {
+        name: "Joimon",
+        title: "This is awesome website",
+        description: "Simplifies the complaint registration process",
+        image: "https://randomuser.me/api/portraits/men/32.jpg"
+      },
+      {
+        name: "Anjali",
+        title: "Very helpful!",
+        description: "Helped me report issues in seconds.",
+        image: "https://randomuser.me/api/portraits/women/65.jpg"
+      },
+      {
+        name: "Arjun",
+        title: "Efficient platform",
+        description: "Easy to use and quick responses.",
+        image: "https://randomuser.me/api/portraits/men/75.jpg"
+      }
+    ],
+    get visibleTestimonials() {
+      // Show 2 testimonials at a time
+      return this.testimonials.slice(this.currentIndex, this.currentIndex + 2);
+    },
+    next() {
+      if (this.currentIndex + 2 < this.testimonials.length) {
+        this.currentIndex += 1;
+      } else {
+        this.currentIndex = 0;
+      }
+    },
+    prev() {
+      if (this.currentIndex > 0) {
+        this.currentIndex -= 1;
+      } else {
+        this.currentIndex = this.testimonials.length - 2;
+      }
+    }
+  }
+}
+</script>
+
+<section class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Support Mail Card -->
+      <div class="flex flex-col md:flex-row bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
+        <img src="https://img.freepik.com/free-photo/young-smiling-man-working-with-laptop-office_1268-21465.jpg?ga=GA1.1.135589344.1740731669&semt=ais_hybrid&w=740" alt="Support Mail" class="w-full md:w-1/2 h-60 object-cover">
+        <div class="p-6 flex flex-col justify-center items-start text-left space-y-3">
+          <div class="flex items-center space-x-2 text-sky-600 text-3xl">
+            <span>✉️</span>
+            <h3 class="text-xl font-semibold text-black">Support Mail</h3>
+          </div>
+          <p class="text-gray-600 text-sm">For any assistance or inquiries about reporting issues or using Civic Eye, feel free to reach out to us.</p>
+          <a href="mailto:support@civiceye.com" class="text-sky-600 font-semibold hover:underline">support@civiceye.com</a>
+        </div>
+      </div>
+  
+      <!-- Make a Call Card -->
+      <div class="flex flex-col md:flex-row bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
+        <img src="https://img.freepik.com/premium-photo/attractive-young-smiling-happy-caucasian-brunette-business-woman-talking-phone-with-friends_843459-2614.jpg?ga=GA1.1.135589344.1740731669&semt=ais_hybrid&w=740" alt="Make A Call" class="w-full md:w-1/2 h-60 object-cover">
+        <div class="p-6 flex flex-col justify-center items-start text-left space-y-3">
+          <div class="flex items-center space-x-2 text-sky-600 text-3xl">
+            <span>📞</span>
+            <h3 class="text-xl font-semibold text-black">Make A Call</h3>
+          </div>
+          <p class="text-gray-600 text-sm">Need immediate assistance or have questions about using Civic Eye? Give us a call, and our team will guide you through.</p>
+          <a href="tel:+1234567890" class="text-sky-600 font-semibold hover:underline">+123 456 7890</a>
+        </div>
+      </div>
+  
+    </div>
+  </section>
+  
+
+    <!-- Footer Section -->
+    <footer class="bg-black text-white py-10">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+          <!-- Phone Numbers -->
+          <div>
+            <h2 class="text-lg font-semibold border-l-4 border-sky-500 pl-2 mb-4">Phone Numbers</h2>
+            <div class="space-y-2 text-sm text-gray-300">
+              <div>
+                <span class="font-medium text-white">Military</span><br>
+                (123) 456-7890<br>
+                (123) 456-7540
+              </div>
+              <div>
+                <span class="font-medium text-white">State Police</span><br>
+                (123) 456-7891
+              </div>
+              <div>
+                <span class="font-medium text-white">Fire Department</span><br>
+                (123) 456-7892
+              </div>
+            </div>
+          </div>
+      
+          <!-- Contact Info -->
+          <div>
+            <h2 class="text-lg font-semibold border-l-4 border-sky-500 pl-2 mb-4">Contact Info</h2>
+            <ul class="space-y-4 text-sm text-gray-300">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M17 20h5v-2a4 4 0 00-4-4h-1"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M2 20h5v-2a4 4 0 00-4-4H2"></path>
+                </svg>
+                <span>Softronics</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M3 5h2l3.6 7.59-1.35 2.45a1 1 0 00-.1.51v2a1 1 0 001 1h12v-2H9.42a1 1 0 01-.92-.63l.03-.09L10 13h6.55a1 1 0 00.92-.63l3.58-6.49A1 1 0 0020 4H6l-.94-2H1v2h2l3.6 7.59"></path>
+                </svg>
+                <span>(+12) 34-5678</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M4 4h16v16H4z"></path>
+                  <path d="M22,6l-10,7L2,6"></path>
+                </svg>
+                <span>softronics@gmail.com</span>
+              </li>
+            </ul>
+          </div>
+      
+          <!-- Quick Links -->
+          <div>
+            <h2 class="text-lg font-semibold border-l-4 border-sky-500 pl-2 mb-4">Quick Links</h2>
+            <ul class="space-y-2 text-sm text-gray-300">
+              <li><a href="#" class="hover:text-white flex items-center gap-2"><span class="text-sky-500">▣</span> Home</a></li>
+              <li><a href="#" class="hover:text-white flex items-center gap-2"><span class="text-sky-500">▣</span> Complaints</a></li>
+              <li><a href="#" class="hover:text-white flex items-center gap-2"><span class="text-sky-500">▣</span> Register</a></li>
+              <li><a href="#" class="hover:text-white flex items-center gap-2"><span class="text-sky-500">▣</span> Login</a></li>
+            </ul>
+          </div>
+      
+        </div>
+      
+        <!-- Footer Bottom -->
+        <div class="text-center text-gray-400 text-sm mt-10">
+          © CivicEye 2025 | Empowering Citizens, Improving Communities.
+        </div>
+      </footer>
+      
+
+    <script>
+        const counters = document.querySelectorAll('.count-to');
+      
+        const animateCount = (el, target) => {
+          let count = 0;
+          const step = target / 100;
+          const speed = 20;
+      
+          const update = () => {
+            count += step;
+            if (count < target) {
+              el.textContent = Math.floor(count);
+              requestAnimationFrame(update);
+            } else {
+              el.textContent = target;
+            }
+          };
+      
+          update();
+        };
+      
+        const observer = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = +el.getAttribute('data-target');
+                animateCount(el, target);
+                observer.unobserve(el);
+              }
+            });
+          },
+          { threshold: 0.6 }
+        );
+      
+        counters.forEach(counter => {
+          observer.observe(counter);
+        });
+      </script>
+      
+</body>
+</html>

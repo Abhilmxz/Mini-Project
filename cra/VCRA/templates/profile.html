@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicEye Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-6xl bg-white border border-gray-300 shadow-md p-8 rounded-lg">
+    <!-- Logo -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-gray-800">
+        <span class="inline-flex items-center gap-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/10799/10799692.png" class="h-8 inline" />
+          <span class="text-gray-700">Civic</span><span class="text-sky-500">EYE</span>
+        </span>
+      </h1>
+    </div>
+
+    <!-- Form Layout -->
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Left Column -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="text-gray-500 text-sm">Full Name</label>
+          <input type="text" value="Karthik km" class="w-full border rounded px-4 py-2" />
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">Mobile Number</label>
+          <input type="text" value="773778025" class="w-full border rounded px-4 py-2" />
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">Email ID</label>
+          <input type="email" value="karthik@gmail.com" class="w-full border rounded px-4 py-2" />
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">D.O.B</label>
+          <input type="text" value="01-10-2003" class="w-full border rounded px-4 py-2" />
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">Password</label>
+          <input type="password" value="**********" class="w-full border rounded px-4 py-2" />
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="text-gray-500 text-sm">State</label>
+          <select class="w-full border rounded px-4 py-2">
+            <option>Select State</option>
+            <option selected>Kerala</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">Address</label>
+          <textarea class="w-full border rounded px-4 py-2" rows="3">chimbuveetilmon cheekilode po</textarea>
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">ID Proof</label>
+          <select class="w-full border rounded px-4 py-2">
+            <option selected>Aadhar</option>
+            <option>Voter ID</option>
+            <option>Passport</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-gray-500 text-sm">ID Proof Number</label>
+          <input type="text" value="123456789" class="w-full border rounded px-4 py-2 font-semibold" />
+        </div>
+      </div>
+
+      <!-- Divider for Desktop -->
+      <div class="hidden md:block border-r mx-auto"></div>
+
+      <!-- Buttons -->
+      <div class="col-span-1 md:col-span-2 flex justify-center gap-6 mt-6">
+        <button type="button" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Edit</button>
+        <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
