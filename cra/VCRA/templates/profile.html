@@ -19,28 +19,29 @@
     </div>
 
     <!-- Form Layout -->
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% csrf_token %}
       <!-- Left Column -->
       <div class="flex flex-col gap-4">
         <div>
           <label class="text-gray-500 text-sm">Full Name</label>
-          <input type="text" value="Karthik km" class="w-full border rounded px-4 py-2" />
+          <input type="text" name="full_name" placeholder="Enter your full name" class="w-full border rounded px-4 py-2" required />
         </div>
         <div>
           <label class="text-gray-500 text-sm">Mobile Number</label>
-          <input type="text" value="773778025" class="w-full border rounded px-4 py-2" />
+          <input type="text" name="mobile_number" placeholder="Enter mobile number" class="w-full border rounded px-4 py-2" required />
         </div>
         <div>
           <label class="text-gray-500 text-sm">Email ID</label>
-          <input type="email" value="karthik@gmail.com" class="w-full border rounded px-4 py-2" />
+          <input type="email" name="email" placeholder="Enter your email" class="w-full border rounded px-4 py-2" required />
         </div>
         <div>
           <label class="text-gray-500 text-sm">D.O.B</label>
-          <input type="text" value="01-10-2003" class="w-full border rounded px-4 py-2" />
+          <input type="date" name="dob" class="w-full border rounded px-4 py-2" required />
         </div>
         <div>
           <label class="text-gray-500 text-sm">Password</label>
-          <input type="password" value="**********" class="w-full border rounded px-4 py-2" />
+          <input type="password" name="password" placeholder="Create a password" class="w-full border rounded px-4 py-2" required />
         </div>
       </div>
 
@@ -48,35 +49,37 @@
       <div class="flex flex-col gap-4">
         <div>
           <label class="text-gray-500 text-sm">State</label>
-          <select class="w-full border rounded px-4 py-2">
-            <option>Select State</option>
-            <option selected>Kerala</option>
+          <select name="state" class="w-full border rounded px-4 py-2" required>
+            <option value="">Select State</option>
+            <option>Kerala</option>
+            <option>Tamil Nadu</option>
+            <option>Karnataka</option>
+            <option>Maharashtra</option>
+            <!-- Add more states -->
           </select>
         </div>
         <div>
           <label class="text-gray-500 text-sm">Address</label>
-          <textarea class="w-full border rounded px-4 py-2" rows="3">chimbuveetilmon cheekilode po</textarea>
+          <textarea name="address" placeholder="Enter your address" class="w-full border rounded px-4 py-2" rows="3" required></textarea>
         </div>
         <div>
           <label class="text-gray-500 text-sm">ID Proof</label>
-          <select class="w-full border rounded px-4 py-2">
-            <option selected>Aadhar</option>
+          <select name="id_proof" class="w-full border rounded px-4 py-2" required>
+            <option value="">Select ID Proof</option>
+            <option>Aadhar</option>
             <option>Voter ID</option>
             <option>Passport</option>
           </select>
         </div>
         <div>
           <label class="text-gray-500 text-sm">ID Proof Number</label>
-          <input type="text" value="123456789" class="w-full border rounded px-4 py-2 font-semibold" />
+          <input type="text" name="id_number" placeholder="Enter ID number" class="w-full border rounded px-4 py-2 font-semibold" required />
         </div>
       </div>
 
-      <!-- Divider for Desktop -->
-      <div class="hidden md:block border-r mx-auto"></div>
-
       <!-- Buttons -->
       <div class="col-span-1 md:col-span-2 flex justify-center gap-6 mt-6">
-        <button type="button" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Edit</button>
+        <button type="reset" class="bg-gray-300 hover:bg-gray-400 text-black font-semibold px-6 py-2 rounded-md">Clear</button>
         <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Submit</button>
       </div>
     </form>

@@ -20,6 +20,20 @@
       <h2 class="text-2xl font-bold mb-4 text-blue-500">Sign Up</h2>
 
       <form method="post">
+        {% if form.errors %}
+  <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
+    <ul class="list-disc list-inside">
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}</strong>: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
         {% csrf_token %}
       
         <div class="mb-4">

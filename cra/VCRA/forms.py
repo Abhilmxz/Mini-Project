@@ -12,7 +12,7 @@ class UserRegistrationForm(forms.ModelForm):
         model = UserRegistration
         fields = ['full_name', 'mobile_number', 'date_of_birth', 'email', 'password']
         widgets = {
-            'password': forms.PasswordInput(),  # 👈 this hides password characters
+            'password': forms.PasswordInput(), 
         }
 
 

@@ -21,8 +21,8 @@
             <div class="flex space-x-10 text-sm font-medium text-gray-700">
                 <a href="#" class="hover:text-sky-500">Home</a>
                 <a href="#" class="hover:text-sky-500">My Complaints</a>
-                <a href="#" class="hover:text-sky-500">About</a>
-                <a href="#" class="hover:text-sky-500">Contact</a>
+                <a href="{% url 'about' %}" class="hover:text-sky-500">About</a>
+                <a href="{% url 'contact' %}" class="hover:text-sky-500">Contact</a>
             </div>
             <!-- User Profile -->
             <div class="relative group">
@@ -35,16 +35,45 @@
             
                 <!-- Dropdown Menu -->
                 <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
-                  <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+                  <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
                   <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Delete Account</a>
-                  <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
+                  <a href="{% url 'home' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
                 </div>
               </div>
         </div>
     </nav>
 
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<div x-data="{
+    images: [
+        'https://cdn.pixabay.com/photo/2023/05/19/17/19/control-center-8004994_1280.jpg',
+        'https://cdn.pixabay.com/photo/2020/10/10/06/14/security-camera-5642120_1280.jpg',
+        'https://cdn.pixabay.com/photo/2021/03/13/04/11/touch-screen-6091015_1280.jpg'
+    ],
+    active: 0,
+    init() {
+        setInterval(() => {
+            this.active = (this.active + 1) % this.images.length;
+        }, 3000); // Change slide every 3 seconds
+    }
+}" class="relative overflow-hidden w-full h-[400px]">
+
+    <!-- Slides -->
+    <template x-for="(image, index) in images" :key="index">
+        <div x-show="active === index" 
+             x-transition:enter="transition-opacity duration-1000" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100"
+             class="absolute inset-0 w-full h-full">
+            <img :src="image" alt="Slide Image" class="w-full h-full object-cover">
+        </div>
+    </template>
+
+</div>
+
     <!-- Banner Section -->
-    <section class="bg-blue-600 text-white py-16 text-center">
+    <section class="bg-black text-white py-16 text-center">
         <h1 class="text-4xl font-bold mb-4">Make Your Voice Heard!</h1>
         <p class="text-xl mb-6">Register complaints, view reports, and bring change to your community.</p>
     </section>
@@ -57,25 +86,25 @@
             <!-- Waste Dumping -->
             <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
               <img src="https://img.icons8.com/ios-filled/50/000000/delete-trash.png" alt="Waste Dumping" class="w-8 h-8" />
-              <p class="text-sm font-medium text-gray-800">Waste Dumping</p>
+              <a href="{% url 'about'%}" class="text-gray-700 hover:text-blue-600 transition font-medium">Waste Dumping</a>
             </div>
       
             <!-- Public Nuisance -->
             <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
               <img src="https://img.icons8.com/ios-filled/50/000000/error.png" alt="Public Nuisance" class="w-8 h-8" />
-              <p class="text-sm font-medium text-gray-800">Public nuisance</p>
+              <a href="#" class="text-gray-700 hover:text-blue-600 transition font-medium">Public nuisance</a>
             </div>
       
             <!-- Traffic Violations -->
             <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
               <img src="https://img.icons8.com/ios-filled/50/000000/traffic-light.png" alt="Traffic Violations" class="w-8 h-8" />
-              <p class="text-sm font-medium text-gray-800">Traffic violations</p>
+              <a href="#" class="text-gray-700 hover:text-blue-600 transition font-medium">Traffic violations</a>
             </div>
       
             <!-- Others -->
             <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center space-y-2 hover:shadow-md cursor-pointer transition">
               <img src="https://img.icons8.com/ios-filled/50/000000/document--v1.png" alt="Others" class="w-8 h-8" />
-              <p class="text-sm font-medium text-gray-800">Others</p>
+              <a href="#" class="text-gray-700 hover:text-blue-600 transition font-medium">Others</a>
             </div>
           </div>
         </div>

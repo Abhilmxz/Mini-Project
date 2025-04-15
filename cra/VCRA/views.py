@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
-from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
 
 def register(request):
     if request.method == 'POST':
@@ -28,19 +28,22 @@ def register(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm (request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.clean_data['email']
-            password = form.clean_data['password']
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-        else:
+            email = form.cleaned_data['email'].strip()
+            password = form.cleaned_data['password']
+            user_obj = User.objects.filter(email__iexact=email).first()
+            if user_obj:
+                user = authenticate(request, username=user_obj.username, password=password)
+                if user:
+                    login(request, user)
+                    return redirect('home')
             form.add_error(None, 'Invalid email or password')
     else:
-        form =LoginForm()
-    return render(request,'login.html',{'form':form})
+        form = LoginForm()
+        
+    return render(request, 'login1.html', {'form': form})
+
 
 
 def homelog(request):
@@ -50,3 +53,11 @@ def homelog(request):
 
 def profile(request):
     return render(request, 'profile.html')
+
+
+
+def about_view(request):
+    return render(request, 'about.html')
+
+def contact_view(request):
+    return render(request, 'contact.html')
