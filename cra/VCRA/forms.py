@@ -1,6 +1,7 @@
 from django import forms
 from .models import UserRegistration
 from django.contrib.auth.models import User
+from .models import Complaint
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -34,3 +35,20 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholder': 'Enter your password'
     }))
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(label='Email', max_length=254)
+
+
+
+class ComplaintForm(forms.ModelForm):
+    class Meta:
+        model = Complaint
+        fields = ['description', 'complaint_type', 'location', 'proof']
+        widgets = {
+            'description': forms.Textarea(attrs={'placeholder': 'Enter description', 'class': 'w-full px-4 py-2 border rounded-xl'}),
+            'complaint_type': forms.Select(attrs={'class': 'w-full px-4 py-2 border rounded-xl'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Enter location', 'class': 'w-full px-4 py-2 border rounded-xl'}),
+            'proof': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+        }

@@ -5,6 +5,16 @@ from django.db import IntegrityError
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import UserRegistration
+from django.contrib import messages
+from .forms import ComplaintForm
+from django.contrib.auth.decorators import login_required
+from .models import Complaint
+
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ForgotPasswordForm
+import random
+
 
 
 # Create your views here.
@@ -12,6 +22,7 @@ from .models import UserRegistration
 def home(request):
     return render(request, 'home.html')
 
+#USER REGISTRATION FUNCTION
 
 def register(request):
     if request.method == 'POST':
@@ -52,7 +63,7 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-
+#LOGIN FUNCTION
 
 def login_view(request):
     if request.method == 'POST':
@@ -72,12 +83,86 @@ def login_view(request):
         
     return render(request, 'login.html', {'form': form})
 
-
+# Homelog Function
 
 def homelog(request):
     if not request.user.is_authenticated:
         return redirect('login')
     return render(request, 'homelog.html')
+
+
+
+# Forgotten Password Functions
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                code = str(random.randint(1000, 9999))
+                request.session['reset_email'] = email
+                request.session['reset_code'] = code
+
+                send_mail(
+                    'Your Password Reset Code',
+                    f'Here is your 4-digit code: {code}',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                )
+
+                return redirect('verify_code')
+            except User.DoesNotExist:
+                messages.error(request, 'No user found with that email.')
+    else:
+        form = ForgotPasswordForm()
+
+    return render(request, 'forgot_password.html', {'form': form})
+
+
+
+def verify_code(request):
+    if request.method == 'POST':
+        code_entered = request.POST.get('code')
+        if code_entered == request.session.get('reset_code'):
+            return redirect('set_new_password')
+        else:
+            messages.error(request, 'Invalid code. Please try again.')
+
+    return render(request, 'verify_code.html')
+
+
+
+def set_new_password(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+        elif len(password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+        else:
+            email = request.session.get('reset_email')
+            user = User.objects.get(email=email)
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'Your password has been changed.')
+            return redirect('login')
+    return render(request, 'set_new_password.html')
+
+
+
+#COMPLAINT FUNCTION
+
+def complaint(request):
+    return render(request, 'complaint.html')
+
+def my_complaints(request):
+    complaints = Complaint.objects.filter(user=request.user)
+    return render(request, 'my_complaints.html', {'complaints': complaints})
+
 
 def profile(request):
     return render(request, 'profile.html')
@@ -89,9 +174,6 @@ def about_view(request):
 
 def contact_view(request):
     return render(request, 'contact.html')
-
-def complaint(request):
-    return render(request, 'complaint.html')
 
 def adminover(request):
     return render(request, 'adminover.html')

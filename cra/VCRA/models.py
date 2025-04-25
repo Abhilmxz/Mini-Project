@@ -17,3 +17,23 @@ class UserRegistration(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+
+class Complaint(models.Model):
+    COMPLAINT_CHOICES = [
+        ('Noise', 'Noise'),
+        ('Pollution', 'Pollution'),
+        ('Road damage', 'Road damage'),
+        ('Other', 'Other'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField()
+    complaint_type = models.CharField(max_length=50, choices=COMPLAINT_CHOICES)
+    location = models.CharField(max_length=255)
+    proof = models.FileField(upload_to='complaints/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.complaint_type}"

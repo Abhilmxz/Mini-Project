@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Complaints</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-4 text-center">Your Submitted Complaints</h2>
+    <ul class="space-y-4">
+      {% for complaint in complaints %}
+        <li class="border p-4 rounded-xl shadow-sm">
+          <div class="flex justify-between">
+            <span class="font-medium text-blue-600">{{ complaint.complaint_type }}</span>
+            <span class="text-gray-500 text-sm">{{ complaint.created_at|date:"Y-m-d H:i" }}</span>
+          </div>
+          <p class="text-gray-700 mt-2">{{ complaint.description }}</p>
+          <p class="text-gray-500 text-sm">Location: {{ complaint.location }}</p>
+          {% if complaint.proof %}
+            <p class="text-sm mt-1">Proof: <a href="{{ complaint.proof.url }}" class="text-blue-500 underline" target="_blank">View File</a></p>
+          {% endif %}
+        </li>
+      {% empty %}
+        <li class="text-gray-500 text-center">You haven’t submitted any complaints yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>

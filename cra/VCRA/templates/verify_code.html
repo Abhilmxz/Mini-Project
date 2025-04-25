@@ -1,0 +1,6 @@
+<h2>Enter the 4-digit code sent to your email</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input type="text" name="code" placeholder="4-digit code" maxlength="4" required>
+  <button type="submit">Verify Code</button>
+</form>
