@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Proof</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white p-6 rounded-lg shadow-xl text-center">
+    <h1 class="text-xl font-bold mb-4">Proof for Complaint: {{ complaint.complaint_type }}</h1>
+
+    {% if complaint.proof.url %}
+      {% if complaint.proof.url.endswith:".mp4" %}
+        <video controls class="max-w-lg mx-auto">
+          <source src="{{ complaint.proof.url }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      {% else %}
+        <img src="{{ complaint.proof.url }}" alt="Proof Image" class="max-w-md mx-auto rounded-lg shadow" />
+      {% endif %}
+    {% else %}
+      <p>No proof uploaded.</p>
+    {% endif %}
+
+    <a href="{% url 'my_complaints' %}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Back to Complaints</a>
+  </div>
+</body>
+</html>

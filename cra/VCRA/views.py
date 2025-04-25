@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ForgotPasswordForm
 import random
+from django.shortcuts import render, get_object_or_404
 
 
 
@@ -154,14 +155,81 @@ def set_new_password(request):
 
 
 
+
 #COMPLAINT FUNCTION
 
+@login_required
 def complaint(request):
-    return render(request, 'complaint.html')
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST, request.FILES)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.user = request.user  # Assign the logged-in user
+            complaint.save()
+            messages.success(request, "Complaint submitted successfully!")
+            return redirect('complaints_list')  # Redirect to a complaints list or another page after submission
+        else:
+            messages.error(request, "There was an error with your submission. Please try again.")
+    else:
+        form = ComplaintForm()
 
+    # Render the form if GET request or on error
+    return render(request, 'complaint.html', {'form': form})
+
+
+@login_required
+def complaint(request):
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST, request.FILES)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.user = request.user  # Assign the logged-in user
+            complaint.save()
+            messages.success(request, "Complaint submitted successfully!")
+            return redirect('my_complaints')  # Redirect to the complaints list
+        else:
+            messages.error(request, "There was an error with your submission.")
+    else:
+        form = ComplaintForm()
+
+    return render(request, 'complaint.html', {'form': form})
+
+
+@login_required
 def my_complaints(request):
+    # Fetch the logged-in user's complaints
     complaints = Complaint.objects.filter(user=request.user)
     return render(request, 'my_complaints.html', {'complaints': complaints})
+
+def view_proof(request, pk):
+    complaint = get_object_or_404(Complaint, pk=pk)
+    return render(request, 'view_proof.html', {'complaint': complaint})
+
+
+@login_required
+def edit_complaint(request, complaint_id):
+    complaint = get_object_or_404(Complaint, pk=complaint_id, user=request.user)
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST, request.FILES, instance=complaint)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Complaint updated successfully.")
+            return redirect('my_complaints')
+    else:
+        form = ComplaintForm(instance=complaint)
+    return render(request, 'edit_complaint.html', {'form': form})
+
+@login_required
+def delete_complaint(request, complaint_id):
+    complaint = get_object_or_404(Complaint, pk=complaint_id, user=request.user)
+    if request.method == 'POST':
+        complaint.delete()
+        messages.success(request, "Complaint deleted successfully.")
+        return redirect('my_complaints')
+    return render(request, 'delete_confirm.html', {'complaint': complaint})
+
+
+
 
 
 def profile(request):

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -16,8 +18,17 @@ urlpatterns = [
 
     path('complaint/', views.complaint, name='complaint'),
     path('my_complaints/', views.my_complaints, name='my_complaints'),
+    path('proof/<int:pk>/', views.view_proof, name='view_proof'),
+    path('complaint/edit/<int:complaint_id>/', views.edit_complaint, name='edit_complaint'),
+    path('complaint/delete/<int:complaint_id>/', views.delete_complaint, name='delete_complaint'),
+
+
     
 
 
     path('adminover/', views.adminover, name='adminover'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
