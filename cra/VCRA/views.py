@@ -15,6 +15,7 @@ from django.conf import settings
 from .forms import ForgotPasswordForm
 import random
 from django.shortcuts import render, get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
@@ -243,5 +244,21 @@ def about_view(request):
 def contact_view(request):
     return render(request, 'contact.html')
 
+
+
+
+#Admin Functions
+
 def adminover(request):
     return render(request, 'adminover.html')
+
+
+def user_manage(request):
+    return render(request, 'user_manage.html')
+
+def admin_comp(request):
+    return render(request, 'admin_comp.html')
+
+
+def feedback(request):
+    return render(request, 'feedback.html')

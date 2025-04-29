@@ -25,8 +25,11 @@ urlpatterns = [
 
     
 
-
+    
     path('adminover/', views.adminover, name='adminover'),
+    path('admin_comp/', views.admin_comp, name='admin_comp'),
+    path('user_manage/', views.user_manage, name='user_manage'),
+    path('feedback/', views.feedback, name='feedback'),
 ]
 
 

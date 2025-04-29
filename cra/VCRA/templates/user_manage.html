@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CivicEYE - User Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Sidebar -->
+  <div class="flex h-screen">
+    <aside class="w-64 bg-white shadow-md p-6 flex flex-col">
+      <div class="text-3xl font-bold text-blue-500 mb-10">
+        <span class="text-black">Civic</span>EYE
+      </div>
+      <nav class="space-y-4">
+        <a href="{% url 'adminover' %}" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
+          <span>📊</span><span>Overview</span>
+        </a>
+        <a href="{% url 'admin_comp' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <span>👥</span><span>Complaints</span>
+        </a>
+        <a href="{% url 'user_manage' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <span>👤</span><span>User Management</span>
+        </a>
+        <a href="{% url 'feedback' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <span>📄</span><span>Feedback</span>
+        </a>
+      </nav>
+      <div class="mt-auto">
+        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center gap-2">
+          <span>⚙️</span> Admin Name
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10">
+      <div class="bg-white p-6 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">User Management</h2>
+
+        <div class="overflow-x-auto rounded-lg">
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Name</th>
+                <th class="py-3 px-6 text-left">Email</th>
+                <th class="py-3 px-6 text-left">Phone</th>
+                <th class="py-3 px-6 text-left">Address</th>
+                <th class="py-3 px-6 text-left">ID Proof</th>
+                <th class="py-3 px-6 text-left">Reports</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm font-light">
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left font-bold">Abhishek</td>
+                <td class="py-3 px-6 text-left">Abhi@gmail.com</td>
+                <td class="py-3 px-6 text-left">8547160387</td>
+                <td class="py-3 px-6 text-left">Kakkodi</td>
+                <td class="py-3 px-6 text-left">-</td>
+                <td class="py-3 px-6 text-left">-</td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left font-bold">Abhishek</td>
+                <td class="py-3 px-6 text-left">Abhi@gmail.com</td>
+                <td class="py-3 px-6 text-left">8547160387</td>
+                <td class="py-3 px-6 text-left">Kakkodi</td>
+                <td class="py-3 px-6 text-left">-</td>
+                <td class="py-3 px-6 text-left">-</td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left font-bold">Abhishek</td>
+                <td class="py-3 px-6 text-left">Abhi@gmail.com</td>
+                <td class="py-3 px-6 text-left">8547160387</td>
+                <td class="py-3 px-6 text-left">Kakkodi</td>
+                <td class="py-3 px-6 text-left">-</td>
+                <td class="py-3 px-6 text-left">-</td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left font-bold">Abhishek</td>
+                <td class="py-3 px-6 text-left">Abhi@gmail.com</td>
+                <td class="py-3 px-6 text-left">8547160387</td>
+                <td class="py-3 px-6 text-left">Kakkodi</td>
+                <td class="py-3 px-6 text-left">-</td>
+                <td class="py-3 px-6 text-left">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -27,16 +27,16 @@
 
         <!-- Nav -->
         <nav class="space-y-4">
-          <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
+          <a href="{% url 'adminover' %}" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
             <span>📊</span><span>Overview</span>
           </a>
-          <a href="#" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <a href="{% url 'admin_comp' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
             <span>👥</span><span>Complaints</span>
           </a>
-          <a href="#" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <a href="{% url 'user_manage' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
             <span>👤</span><span>User Management</span>
           </a>
-          <a href="#" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <a href="{% url 'feedback' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
             <span>📄</span><span>Feedback</span>
           </a>
         </nav>

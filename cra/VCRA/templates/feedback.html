@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - CivicEYE</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-50 min-h-screen font-sans">
+
+  <div class="flex min-h-screen">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md p-4 space-y-4">
+      <nav class="space-y-4">
+        <a href="{% url 'adminover' %}" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
+          <span>📊</span><span>Overview</span>
+        </a>
+        <a href="{% url 'admin_comp' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <span>👥</span><span>Complaints</span>
+        </a>
+        <a href="{% url 'user_manage' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
+          <span>👤</span><span>User Management</span>
+        </a>
+        <a href="{% url 'feedback' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium bg-blue-100 rounded">
+          <span>📄</span><span>Feedback</span>
+        </a>
+      </nav>
+
+      <!-- Admin Button -->
+      <button class="bg-blue-500 text-white flex items-center justify-center space-x-2 py-2 rounded font-semibold w-full">
+        <span>⚙️</span> <span>Admin Name</span>
+      </button>
+    </aside>
+
+    <!-- Main Content (Feedback Form) -->
+    <main class="flex-1 flex items-center justify-center p-8">
+      <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+        <h2 class="text-2xl font-bold text-blue-600 mb-4 text-center">We value your feedback</h2>
+        <form method="POST" action="#">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" name="name" id="name" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          </div>
+
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" name="email" id="email" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          </div>
+
+          <div class="mb-4">
+            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+            <textarea name="message" id="message" rows="5" required
+                      class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+          </div>
+
+          <div class="text-center">
+            <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+              Submit Feedback
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>
