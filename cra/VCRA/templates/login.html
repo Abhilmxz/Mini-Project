@@ -16,9 +16,12 @@
             <img src="https://static.vecteezy.com/system/resources/previews/035/851/744/large_2x/ai-generated-a-person-wearing-a-headset-and-talking-on-the-phone-surrounded-by-computers-in-a-call-center-free-photo.jpg" alt="Welcome Image" class="rounded-lg mt-4">
         </div>
 
-        <!-- Right Section -->
+        <!-- Right Section: Tabs for User/Admin Login -->
         <div class="w-1/2 p-8">
-            <h2 class="text-2xl font-bold mb-4 text-blue-600">Login</h2>
+            <div class="mb-4 flex justify-around border-b pb-2">
+                <button onclick="showForm('user')" id="user-tab" class="font-semibold text-blue-600 border-b-2 border-blue-600">User Login</button>
+                <button onclick="showForm('admin')" id="admin-tab" class="font-semibold text-blue-600 border-b-2 border-blue-600">Admin Login</button>
+            </div>
 
             <!-- Message Box for Errors -->
             {% if messages %}
@@ -29,18 +32,9 @@
                 </div>
             {% endif %}
 
-            <form method="post" action="{% url 'login' %}">
+            <!-- User Login Form -->
+            <form id="user-form" method="post" action="{% url 'user_login' %}">
                 {% csrf_token %}
-                
-                <!-- Show form errors -->
-                {% if form.non_field_errors %}
-                    <div class="mb-4 text-red-500 text-sm">
-                        {% for error in form.non_field_errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700 font-medium">Email</label>
                     {{ form.email|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" }}
@@ -49,17 +43,52 @@
                     <label for="password" class="block text-gray-700 font-medium">Password</label>
                     {{ form.password|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" }}
                 </div>
-            
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">Login</button>
             </form>
-            <div class="text-center mt-4">
-                <p><a href="{% url 'forgot_password' %}" class="text-blue-500 hover:underline">Forgot Password? </a></p>
-              </div>
+            
 
+            <!-- Admin Login Form -->
+            <form id="admin-form" method="post" action="{% url 'admin_login' %}" class="hidden">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="username" class="block text-gray-700 font-medium">Username</label>
+                    <input type="text" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 font-medium">Password</label>
+                    <input type="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full">Admin Login</button>
+            </form>
+
+            <div class="text-center mt-4">
+                <p><a href="{% url 'forgot_password' %}" class="text-blue-500 hover:underline">Forgot Password?</a></p>
+            </div>
             <p class="mt-4 text-center text-gray-600">
                 Don't have an account? <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Sign Up</a>
             </p>
         </div>
     </div>
+
+    <script>
+        function showForm(role) {
+            const userForm = document.getElementById('user-form');
+            const adminForm = document.getElementById('admin-form');
+            const userTab = document.getElementById('user-tab');
+            const adminTab = document.getElementById('admin-tab');
+
+            if (role === 'admin') {
+                userForm.classList.add('hidden');
+                adminForm.classList.remove('hidden');
+                userTab.classList.remove('text-blue-600', 'border-blue-600');
+                adminTab.classList.add('text-blue-600', 'border-blue-600');
+            } else {
+                adminForm.classList.add('hidden');
+                userForm.classList.remove('hidden');
+                adminTab.classList.remove('text-blue-600', 'border-blue-600');
+                userTab.classList.add('text-blue-600', 'border-blue-600');
+            }
+        }
+    </script>
 </body>
 </html>

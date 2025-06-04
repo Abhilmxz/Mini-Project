@@ -1,9 +1,9 @@
 from django import forms
-from .models import UserRegistration
+from .models import UserRegistration, Complaint
 from django.contrib.auth.models import User
-from .models import Complaint
 from django.core.exceptions import ValidationError
-
+from .models import Feedback
+from .models import CivicUser
 
 class UserRegistrationForm(forms.ModelForm):
     class Meta:
@@ -20,36 +20,32 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("A user with this email already exists.")
         return email
 
-
-def clean_mobile_number(self):
-    mobile_number = self.cleaned_data.get('mobile_number')
-    return mobile_number
-
-def clean_email(self):
-    email = self.cleaned_data.get('email')
-    return email
-
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={
-        'placeholder': 'Enter your email'
-    }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Enter your password'
-    }))
-
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))
 
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=254)
-
-
+    
+    
+class CivicUserForm(forms.ModelForm):
+    class Meta:
+        model = CivicUser
+        fields = '__all__'
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+            'password': forms.PasswordInput(),
+        }
+    
 
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        exclude = ['user', 'created_at']
+        exclude = ['user', 'created_at', 'status']
         widgets = {
-            'description': forms.TextInput(attrs={
+            'description': forms.Textarea(attrs={
                 'placeholder': 'Enter description',
+                'rows': 5,
                 'class': 'w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500'
             }),
             'complaint_type': forms.Select(attrs={
@@ -65,16 +61,24 @@ class ComplaintForm(forms.ModelForm):
             }),
         }
 
-    # Validation for proof (file upload)
     def clean_proof(self):
         proof = self.cleaned_data.get('proof', None)
         if proof:
-            # File size check (example: max 5MB)
             if proof.size > 5 * 1024 * 1024:
                 raise ValidationError("File size must be less than 5 MB.")
-
-            # File type check (example: allow only images or videos)
-            if not proof.name.endswith(('.jpg', '.jpeg', '.png', '.mp4', '.mov', '.avi')):
-                raise ValidationError("File type must be JPG, PNG, MP4, MOV, or AVI.")
-        
+            if not proof.name.lower().endswith(('.jpg', '.jpeg', '.png', '.mp4', '.mov', '.avi')):
+                raise ValidationError("Invalid file type. Only images or videos are allowed.")
         return proof
+
+
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff']
+        
+        
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'email', 'message']  # use message, not feedback

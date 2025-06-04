@@ -1,73 +1,68 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report Issue</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Script to toggle the file input field visibility
-    function toggleFileInput() {
-      document.getElementById('file-upload').click();  // Trigger the hidden file input field
-    }
-  </script>
+    <meta charset="UTF-8">
+    <title>Report Complaint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
+<body class="bg-gray-100">
 
-  <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
-    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-2">Report Issues Seamlessly</h2>
-    <p class="text-sm text-gray-500 text-center mb-6">
-      Our platform empowers users to submit complaints with ease, offering tools to upload multimedia for comprehensive issue reporting.
+<div class="max-w-md mx-auto mt-16 p-6 bg-white rounded-xl shadow-md">
+    <h2 class="text-2xl font-semibold text-center mb-2">Report Issues Seamlessly</h2>
+    <p class="text-center text-sm text-gray-500 mb-4">
+        Our platform empowers users to submit complaints with ease, offering tools to upload multimedia for comprehensive issue reporting.
     </p>
-    
+
     {% if messages %}
-      <div class="mb-4">
         {% for message in messages %}
-          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative" role="alert">
-            {{ message }}
-          </div>
+            <div class="mb-4 text-sm px-4 py-3 rounded border {{ message.tags }} {% if message.tags == 'error' %}bg-red-100 border-red-400 text-red-700{% elif message.tags == 'success' %}bg-green-100 border-green-400 text-green-700{% endif %}">
+                {{ message }}
+            </div>
         {% endfor %}
-      </div>
     {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          {{ form.description }}
-        </div>
+        {% csrf_token %}
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Complaint Type</label>
-          {{ form.complaint_type }}
-        </div>
+        <!-- Description -->
+        <label class="block mb-2 font-medium">Description</label>
+        {{ form.description }}
+        {% for error in form.description.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-          {{ form.location }}
-        </div>
+        <!-- Complaint Type -->
+        <label class="block mt-4 mb-2 font-medium">Complaint Type</label>
+        {{ form.complaint_type }}
+        {% for error in form.complaint_type.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Proof (Optional)</label>
-          <button type="button" onclick="toggleFileInput()" class="w-full bg-blue-200 hover:bg-blue-300 text-blue-800 py-2 rounded-xl font-medium transition">
+        <!-- Location -->
+        <label class="block mt-4 mb-2 font-medium">Location</label>
+        {{ form.location }}
+        {% for error in form.location.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+
+        <!-- Proof Upload -->
+        <label class="block mt-4 mb-2 font-medium">Proof (Optional)</label>
+        <label for="file-upload" class="block bg-blue-200 text-center text-blue-800 py-2 rounded-lg cursor-pointer hover:bg-blue-300">
             Upload photo or video
-          </button>
-          {{ form.proof }} <!-- This will render the hidden file input -->
-        </div>
+        </label>
+        {{ form.proof }}
+        {% for error in form.proof.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
 
-        <div class="flex justify-between space-x-4 pt-4">
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
-            Submit
-          </button>
-          <a href="{% url 'homelog' %}" type="button" class="w-full bg-gray-200 text-center hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-semibold transition">
-            Cancel
-          </a>
+        <!-- Buttons -->
+        <div class="mt-6 flex justify-between">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">Submit</button>
+            <a href="{% url 'home' %}" class="bg-gray-300 text-black px-6 py-2 rounded-xl hover:bg-gray-400">Cancel</a>
         </div>
-      </div>
     </form>
-  </div>
+</div>
 
 </body>
 </html>

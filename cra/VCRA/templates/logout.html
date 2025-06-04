@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logout Confirmation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .backdrop-blur {
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1600&q=80');">
+
+  <!-- Overlay -->
+  <div class="flex items-center justify-center min-h-screen bg-black bg-opacity-50 px-4">
+    <div class="bg-white/80 backdrop-blur max-w-md w-full p-8 rounded-xl shadow-xl text-center border border-gray-200">
+      
+      <!-- Icon -->
+      <div class="flex justify-center mb-4">
+        <svg class="w-12 h-12 text-sky-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+        </svg>
+      </div>
+
+      <!-- Title and Message -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Are you sure you want to logout?</h2>
+      <p class="text-gray-600 text-sm mb-6">You will be logged out of your account and redirected to the login page.</p>
+
+      <!-- Buttons -->
+      <div class="flex justify-center gap-4">
+        <a href="{% url 'home' %}" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-md shadow-md">
+          Yes, Logout
+        </a>
+        <a href="{% url 'homelog' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-md shadow-md">
+          Cancel
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

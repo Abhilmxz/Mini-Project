@@ -1,54 +1,83 @@
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Complaint</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+  <script>
+    function toggleFileInput() {
+      document.getElementById('id_proof').click();
+    }
+  </script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
 
-  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg">
-    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Edit Your Complaint</h2>
+  <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-2">Edit Complaint</h2>
+    <p class="text-sm text-gray-500 text-center mb-6">
+      Update complaint details and re-upload your proof if needed.
+    </p>
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+    {% if messages %}
+      <div class="mb-4">
+        {% for message in messages %}
+          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.non_field_errors }}
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-        {{ form.description }}
-        {{ form.description.errors }}
-      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          {{ form.description|add_class:"w-full px-4 py-2 border rounded-md" }}
+        </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Complaint Type</label>
-        {{ form.complaint_type }}
-        {{ form.complaint_type.errors }}
-      </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Complaint Type</label>
+          {{ form.complaint_type|add_class:"w-full px-4 py-2 border rounded-md" }}
+        </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-        {{ form.location }}
-        {{ form.location.errors }}
-      </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+          {{ form.location|add_class:"w-full px-4 py-2 border rounded-md" }}
+        </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Proof</label>
-        {{ form.proof }}
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Proof (Optional)</label>
+          <button type="button" onclick="toggleFileInput()" class="w-full bg-blue-200 hover:bg-blue-300 text-blue-800 py-2 rounded-xl font-medium transition">
+            Upload new photo or video
+          </button>
+          {{ form.proof }}
+        </div>
+
         {% if complaint.proof %}
-          <p class="text-sm mt-1">Current file: 
-            <a href="{{ complaint.proof.url }}" target="_blank" class="text-blue-500 underline">View</a>
-          </p>
+          <div class="text-sm text-gray-600">
+            Current file: 
+            <a href="{{ complaint.proof.url }}" class="text-blue-600 underline" target="_blank">View</a>
+          </div>
         {% endif %}
-      </div>
 
-      <div class="flex justify-between gap-4 pt-4">
-        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
-          Update
-        </button>
-        <a href="{% url 'my_complaints' %}" class="w-full bg-gray-300 text-center hover:bg-gray-400 text-gray-800 py-2 rounded-xl font-semibold transition">
-          Cancel
-        </a>
+        <div class="flex justify-between space-x-4 pt-4">
+          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
+            Update
+          </button>
+          <a href="{% url 'admin_comp' %}" class="w-full bg-gray-200 text-center hover:bg-gray-300 text-gray-800 py-2 rounded-xl font-semibold transition">
+            Cancel
+          </a>
+        </div>
       </div>
     </form>
   </div>
