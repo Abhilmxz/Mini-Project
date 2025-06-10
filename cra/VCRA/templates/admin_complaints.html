@@ -7,14 +7,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-
-  <!-- Sidebar -->
   <div class="flex h-screen">
+    <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-md p-6 flex flex-col">
       <div class="flex items-center space-x-1 mb-8">
-          <span class="text-2xl">📷</span>
-          <h1 class="text-2xl font-bold text-blue-500">Civic<span class="text-black">EYE</span></h1>
-        </div>
+        <span class="text-2xl">📷</span>
+        <h1 class="text-2xl font-bold text-blue-500">Civic<span class="text-black">EYE</span></h1>
+      </div>
       <nav class="space-y-4">
         <a href="{% url 'adminover' %}" class="text-black px-4 py-2 rounded flex items-center space-x-2 font-medium">
           <span>📊</span><span>Overview</span>
@@ -37,23 +36,30 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-10">
+    <main class="flex-1 p-10 overflow-auto">
       <div class="bg-white p-6 rounded-2xl shadow-md">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Complaints</h2>
 
-        <!-- Sorting Buttons -->
-        <div class="flex gap-4 mb-6">
-          <button class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 px-4 rounded-lg shadow-sm">
-            Sort by Date
-          </button>
-          <button class="bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 px-4 rounded-lg shadow-sm">
-            Sort by Type
-          </button>
+        <!-- Controls -->
+        <div class="flex flex-wrap items-center gap-4 mb-6">
+          <select id="sort-date" class="bg-blue-100 text-blue-700 py-2 px-4 rounded-lg shadow-sm">
+            <option value="">Sort by Date</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+
+          <select id="filter-type" class="bg-blue-100 text-blue-700 py-2 px-4 rounded-lg shadow-sm">
+            <option value="">Filter by Type</option>
+            <option value="Noise">Noise</option>
+            <option value="Pollution">Pollution</option>
+            <option value="Road damage">Road damage</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <!-- Complaints Table -->
         <div class="overflow-x-auto rounded-lg">
-          <table class="min-w-full bg-white">
+          <table id="complaints-table" class="min-w-full bg-white">
             <thead>
               <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Date</th>
@@ -77,9 +83,9 @@
                 <td class="py-3 px-6 capitalize">{{ c.status }}</td>
                 <td class="py-3 px-6">
                   {% if c.proof %}
-                    <a href="{{ c.proof.url }}" target="_blank" class="text-blue-600 underline text-sm">View</a>
+                  <a href="{{ c.proof.url }}" target="_blank" class="text-blue-600 underline text-sm">View</a>
                   {% else %}
-                    <span class="text-gray-400">No file</span>
+                  <span class="text-gray-400">No file</span>
                   {% endif %}
                 </td>
                 <td class="py-3 px-6">
@@ -88,9 +94,8 @@
                     <a href="{% url 'update_complaint_status' c.pk 'accepted' %}" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Accept</a>
                     {% endif %}
                     {% if c.status != "rejected" %}
-                    <a href="{% url 'update_complaint_status' c.pk 'rejected' %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Reject</a>
+                    <button data-id="{{ c.pk }}" class="reject-btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Reject</button>
                     {% endif %}
-                    {% comment %} <a href="{% url 'edit_complaint' c.pk %}" class="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-sm">Edit</a> {% endcomment %}
                   </div>
                 </td>
               </tr>
@@ -98,9 +103,143 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Pagination -->
+        <div id="pagination-buttons" class="mt-6 flex justify-center gap-2"></div>
       </div>
     </main>
   </div>
 
+  <!-- JavaScript -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const table = document.getElementById("complaints-table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const rowsPerPage = 5;
+    let currentPage = 1;
+    let sortState = { column: null, direction: 'asc' };
+    let filteredRows = [...rows];
+
+    const paginate = (page) => {
+      tbody.innerHTML = '';
+      const start = (page - 1) * rowsPerPage;
+      const paginated = filteredRows.slice(start, start + rowsPerPage);
+      paginated.forEach(row => tbody.appendChild(row));
+      renderPagination(filteredRows.length);
+    };
+
+    const renderPagination = (total) => {
+      const totalPages = Math.ceil(total / rowsPerPage);
+      const container = document.getElementById("pagination-buttons");
+      container.innerHTML = '';
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = `px-3 py-1 rounded text-sm font-medium 
+          ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          paginate(currentPage);
+        });
+        container.appendChild(btn);
+      }
+    };
+
+    const sortTable = (colIndex, type, forceDirection = null) => {
+      const direction = forceDirection || ((sortState.column === colIndex && sortState.direction === 'asc') ? 'desc' : 'asc');
+      sortState = { column: colIndex, direction };
+
+      filteredRows.sort((a, b) => {
+        const aText = a.children[colIndex].textContent.trim();
+        const bText = b.children[colIndex].textContent.trim();
+
+        if (type === 'date') {
+          const toDate = (str) => {
+            const [d, m, y] = str.split('-').map(Number);
+            return new Date(y, m - 1, d);
+          };
+          return direction === 'asc' ? toDate(aText) - toDate(bText) : toDate(bText) - toDate(aText);
+        } else {
+          return direction === 'asc' ? aText.localeCompare(bText) : bText.localeCompare(aText);
+        }
+      });
+
+      currentPage = 1;
+      paginate(currentPage);
+    };
+
+    const filterType = (value) => {
+      if (!value) {
+        filteredRows = [...rows];
+      } else {
+        filteredRows = rows.filter(row =>
+          row.children[4].textContent.trim().toLowerCase() === value.toLowerCase()
+        );
+      }
+
+      // Re-apply sorting after filtering
+      if (sortState.column !== null) {
+        sortTable(sortState.column, 'date', sortState.direction);
+      } else {
+        currentPage = 1;
+        paginate(currentPage);
+      }
+    };
+
+    // Sort dropdown
+    document.getElementById("sort-date").addEventListener("change", (e) => {
+      const value = e.target.value;
+      if (value === "newest") {
+        sortTable(0, 'date', 'desc');
+      } else if (value === "oldest") {
+        sortTable(0, 'date', 'asc');
+      }
+    });
+
+    // Filter dropdown
+    document.getElementById("filter-type").addEventListener("change", (e) => filterType(e.target.value));
+
+    // Initial display
+    paginate(currentPage);
+  });
+
+
+  // Handle Reject Button Click
+document.querySelectorAll(".reject-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const complaintId = button.getAttribute("data-id");
+
+    // Optional: Add confirmation
+    if (!confirm("Are you sure you want to reject and delete this complaint?")) return;
+
+    // Send a DELETE request to the backend (optional: only if needed)
+    fetch(`/admin/complaints/${complaintId}/reject/`, {
+      method: "POST",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+    }).then(response => {
+      if (response.ok) {
+        // Remove the row from the table
+        const row = button.closest("tr");
+        row.remove();
+
+        // Refresh pagination
+        const table = document.getElementById("complaints-table");
+        const allRows = Array.from(table.querySelectorAll("tbody tr"));
+        rows.length = 0;
+        rows.push(...allRows);
+        filteredRows = [...rows];
+        paginate(currentPage);
+      } else {
+        alert("Failed to reject complaint.");
+      }
+    });
+  });
+});
+
+</script>
 </body>
 </html>

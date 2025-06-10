@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import UserRegistration
 from .models import Feedback
-from .models import CivicUser
+
 
 from django.urls import path
 from django.http import HttpResponseRedirect
@@ -38,4 +38,3 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('name', 'email', 'message', 'created_at')
     
 
-admin.site.register(CivicUser)

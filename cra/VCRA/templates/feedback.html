@@ -17,7 +17,7 @@
           <h1 class="text-2xl font-bold text-blue-500">Civic<span class="text-black">EYE</span></h1>
         </div>
       <nav class="space-y-4">
-        <a href="{% url 'adminover' %}" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
+        <a href="{% url 'adminover' %}" class="text-black px-4 py-2 rounded flex items-center space-x-2 font-medium">
           <span>📊</span><span>Overview</span>
         </a>
         <a href="{% url 'admin_comp' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
@@ -26,7 +26,7 @@
         <a href="{% url 'user_manage' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium">
           <span>👤</span><span>User Management</span>
         </a>
-        <a href="{% url 'feedback' %}" class="flex items-center space-x-2 px-4 py-2 text-black font-medium bg-blue-100 rounded">
+        <a href="{% url 'feedback' %}" class="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 font-medium">
           <span>📄</span><span>Feedback</span>
         </a>
       </nav>
@@ -37,39 +37,28 @@
       </button>
     </aside>
 
-    <!-- Main Content (Feedback Form) -->
-    <main class="flex-1 flex items-center justify-center p-8">
-      <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <h2 class="text-2xl font-bold text-blue-600 mb-4 text-center">We value your feedback</h2>
-        <form method="POST" action="#">
-          {% csrf_token %}
-          <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input type="text" name="name" id="name" required
-                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-          </div>
+    <!-- Main Content (Feedback List) -->
+<main class="flex-1 p-8 overflow-y-auto">
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold text-blue-600 mb-6">User Feedback</h2>
 
-          <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" name="email" id="email" required
-                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-          </div>
-
-          <div class="mb-4">
-            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-            <textarea name="message" id="message" rows="5" required
-                      class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
-          </div>
-
-          <div class="text-center">
-            <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-              Submit Feedback
-            </button>
-          </div>
-        </form>
+    {% if feedback_entries %}
+  <h2 class="text-xl font-bold mb-4">User Feedback</h2>
+  <div class="space-y-4">
+    {% for feedback in feedback_entries %}
+      <div class="bg-gray-100 p-4 rounded shadow">
+        <p class="font-semibold">{{ feedback.name }} ({{ feedback.email }})</p>
+        <p class="text-gray-600 text-sm">{{ feedback.created_at }}</p>
+        <p class="mt-2">{{ feedback.message }}</p>
       </div>
-    </main>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-gray-500">No feedback submitted yet.</p>
+{% endif %}
+  </div>
+</main>
+
 
   </div>
 </body>

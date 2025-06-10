@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import delete_account_view
 
 
 
@@ -18,11 +19,12 @@ urlpatterns = [
     path('verify-code/', views.verify_code, name='verify_code'),
     path('set-new-password/', views.set_new_password, name='set_new_password'),
     path('homelog/', views.homelog, name='homelog'),
-    path('profile/', views.profile, name='profile'),
-    path('delete_account/', views.delete_account, name='delete_account'),
+    path('profile/', views.profile_view, name='profile'),
+
+    path("delete-account/", delete_account_view, name="delete_account"),
     path('logout/', views.logout_view, name='logout'),
-    path('form/', views.civic_form_view, name='civic_form'),
-    path('form/success/', views.success_view, name='success'),
+    # path('form/', views.civic_form_view, name='civic_form'),
+    # path('form/success/', views.success_view, name='success'),
     
 
     # Complaint Submission (User)
@@ -44,8 +46,9 @@ urlpatterns = [
 
     # Admin: User Management & Feedback
     path('user_manage/', views.user_manage, name='user_manage'),
-    path('admin/feedback/', views.feedback_admin_view, name='feedback_admin'),
-    path('feedback/', views.feedback_view, name='feedback'),
+    path('submit-feedback/', views.submit_feedback, name='submit_feedback'),
+    path('adminpanel/feedback/', views.feedback_admin_view, name='feedback'),
+
 ]
 
 # Serve uploaded files in development

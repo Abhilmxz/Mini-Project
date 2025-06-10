@@ -16,9 +16,13 @@ from django.db import IntegrityError
 from .models import Feedback
 # from .forms import FeedbackForm  # assuming you have a form
 from django.http import HttpResponseForbidden
-from .forms import CivicUserForm
-from .models import CivicUser
+from .forms import UserProfileForm
+from .models import UserProfile
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Complaint
+from django.contrib.auth import logout
 
 import time
 import secrets
@@ -46,7 +50,8 @@ from .models import (
 def home(request):
     return render(request, 'home.html')
 
-def profile(request):
+@login_required
+def profile_view(request):
     return render(request, 'profile.html')
 
 def delete_account(request):
@@ -251,23 +256,36 @@ def set_new_password(request):
 # ================================
 
 
-def civic_form_view(request, user_id=None):
-    instance = CivicUser.objects.filter(pk=user_id).first() if user_id else None
+@login_required
+def profile_view(request):
+    user = request.user
+    try:
+        profile = user.userprofile
+    except UserProfile.DoesNotExist:
+        profile = UserProfile(user=user)
 
     if request.method == 'POST':
-        form = CivicUserForm(request.POST, instance=instance)
+        form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('success')
-        else:
-            print("❌ Form is not valid:", form.errors)
+            return redirect('profile')  # or wherever you'd like
     else:
-        form = CivicUserForm(instance=instance)
+        form = UserProfileForm(instance=profile)
 
-    return render(request, 'your_app/civic_form.html', {'form': form})
+    return render(request, 'profile.html', {
+        'form': form,
+        'email': user.email,
+        'password': '********',  # Hide actual password
+    })
+    
+    
 
-def success_view(request):
-    return HttpResponse("✅ Form submitted successfully!")
+#Backend profilw
+
+@login_required
+def user_manage(request):
+    users = UserProfile.objects.select_related('user')
+    return render(request, 'user_manage.html', {'users': users})
 
 # ================================
 #         COMPLAINT VIEWS
@@ -352,28 +370,29 @@ def delete_complaint(request, complaint_id):
 
 def submit_feedback(request):
     if request.method == "POST":
-        feedback = request.POST.get('feedback', '').strip()
-        if feedback:
-            # Save feedback to database or process it here
+        message = request.POST.get('feedback', '').strip()
+        if message:
+            Feedback.objects.create(
+                name=request.user.get_full_name(),
+                email=request.user.email,
+                message=message
+            )
             messages.success(request, "Thank you! Your feedback has been submitted.")
         else:
             messages.error(request, "Please enter some feedback before submitting.")
-    return redirect('homelog')  # redirect to homepage or wherever
+    return redirect('homelog')
 
 
 def feedback_view(request):
-    # Your feedback logic here
-    return render(request, 'feedback.html')
+    return render(request, 'feedback.html')  # Public form view if needed
+
 
 @login_required
 def feedback_admin_view(request):
-    # Only allow staff (admin) users to access this view
     if not request.user.is_staff:
         return HttpResponseForbidden("You do not have permission to view this page.")
-
     feedback_entries = Feedback.objects.order_by('-created_at')
     return render(request, 'feedback.html', {'feedback_entries': feedback_entries})
-
 # ================================
 #         ADMIN FUNCTIONS
 # ================================
@@ -399,28 +418,42 @@ def user_list(request):
     return render(request, 'admin/user_list.html', {'users': users})
 
 
+@login_required
 def edit_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+    profile = get_object_or_404(UserProfile, id=user_id)
+
     if request.method == 'POST':
-        form = CustomUserForm(request.POST, instance=user)
+        form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('user_list')
+            return redirect('user_manage')
     else:
-        form = CustomUserForm(instance=user)
-    return render(request, 'admin/edit_user.html', {'form': form})
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'edit_user.html', {'form': form, 'user': profile.user})
 
 
 def delete_user(request, user_id):
-    user = get_object_or_404(UserRegistration, id=user_id)
-    user.delete()
-    messages.success(request, "User deleted successfully.")
-    return redirect('user_manage')
-
+    user = get_object_or_404(User, id=user_id)
+    if request.method == "GET":
+        user.delete()
+        messages.success(request, "User deleted successfully.")
+        return redirect('user_manage')  
 
 def admin_complaints_view(request):
     complaints = Complaint.objects.all().order_by('-created_at')
     return render(request, 'admin_complaints.html', {'complaints': complaints})
+
+
+@csrf_exempt
+def reject_complaint_ajax(request, pk):
+    if request.method == "POST":
+        try:
+            Complaint.objects.get(pk=pk).delete()
+            return JsonResponse({'success': True})
+        except Complaint.DoesNotExist:
+            return JsonResponse({'error': 'Not found'}, status=404)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 def update_complaint_status(request, pk, status):
@@ -443,3 +476,32 @@ def edit_admin_complaint(request, pk):
     else:
         form = ComplaintForm(instance=complaint)
     return render(request, 'admin/edit_complaint.html', {'form': form, 'complaint': complaint})
+
+
+
+
+
+#USER ACCOUNT DELETION
+
+@login_required
+def delete_account_view(request):
+    if request.method == "POST":
+        password = request.POST.get("password", "")
+        confirm = request.POST.get("confirm")  # Will be "on" if checked
+
+        if not confirm:
+            messages.error(request, "Please confirm that you understand the consequences.")
+            return redirect("delete_account")
+
+        # Re-fetch the user from the database to avoid stale data
+        user = request.user
+        if not user.check_password(password):
+            messages.error(request, "Incorrect password.")
+            return redirect("delete_account")
+
+        logout(request)
+        user.delete()
+        messages.success(request, "Your account has been deleted.")
+        return redirect("home")
+
+    return render(request, "delete_account.html")

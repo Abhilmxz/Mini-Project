@@ -3,7 +3,7 @@ from .models import UserRegistration, Complaint
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Feedback
-from .models import CivicUser
+from .models import UserProfile
 
 class UserRegistrationForm(forms.ModelForm):
     class Meta:
@@ -28,14 +28,10 @@ class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=254)
     
     
-class CivicUserForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = CivicUser
-        fields = '__all__'
-        widgets = {
-            'dob': forms.DateInput(attrs={'type': 'date'}),
-            'password': forms.PasswordInput(),
-        }
+        model = UserProfile
+        fields = ['full_name', 'mobile_number', 'dob', 'state', 'address', 'id_proof', 'id_number']
     
 
 class ComplaintForm(forms.ModelForm):

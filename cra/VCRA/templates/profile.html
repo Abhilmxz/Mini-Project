@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CivicEye Form</title>
+  <title>CivicEye Profile</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white min-h-screen flex items-center justify-center px-4">
@@ -12,7 +12,6 @@
     <!-- Back Button -->
     <div class="mb-6">
       <button type="button" onclick="history.back()" class="text-sky-600 hover:underline font-semibold flex items-center gap-2">
-        <!-- Left arrow icon -->
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
@@ -30,68 +29,75 @@
       </h1>
     </div>
 
-    <!-- Form Layout -->
+    <!-- Form -->
     <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {% csrf_token %}
-      
-      <!-- Left Column -->
-      <div class="flex flex-col gap-4">
-        <div>
-          <label class="text-gray-500 text-sm">Full Name</label>
-          <input type="text" name="full_name" placeholder="Enter your full name" class="w-full border rounded px-4 py-2" required />
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">Mobile Number</label>
-          <input type="tel" name="mobile_number" placeholder="Enter mobile number" class="w-full border rounded px-4 py-2" required />
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">Email ID</label>
-          <input type="email" name="email" placeholder="Enter your email" class="w-full border rounded px-4 py-2" required />
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">D.O.B</label>
-          <input type="date" name="dob" class="w-full border rounded px-4 py-2" required />
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">Password</label>
-          <input type="password" name="password" placeholder="Create a password" class="w-full border rounded px-4 py-2" required />
-        </div>
+
+      <!-- Email and Password (Read-only) -->
+      <div>
+        <label class="text-gray-500 text-sm">Email ID</label>
+        <input type="email" class="w-full border rounded px-4 py-2 bg-gray-100" value="{{ user.email }}" readonly />
+      </div>
+      <div>
+        <label class="text-gray-500 text-sm">Password</label>
+        <input type="password" class="w-full border rounded px-4 py-2 bg-gray-100" value="********" readonly />
       </div>
 
-      <!-- Right Column -->
-      <div class="flex flex-col gap-4">
-        <div>
-          <label class="text-gray-500 text-sm">State</label>
-          <select name="state" class="w-full border rounded px-4 py-2" required>
-            <option value="">Select State</option>
-            <option>Kerala</option>
-            <option>Tamil Nadu</option>
-            <option>Karnataka</option>
-            <option>Maharashtra</option>
-            <!-- Add more states -->
-          </select>
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">Address</label>
-          <textarea name="address" placeholder="Enter your address" class="w-full border rounded px-4 py-2" rows="3" required></textarea>
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">ID Proof</label>
-          <select name="id_proof" class="w-full border rounded px-4 py-2" required>
-            <option value="">Select ID Proof</option>
-            <option>Aadhar</option>
-            <option>Voter ID</option>
-            <option>Passport</option>
-          </select>
-        </div>
-        <div>
-          <label class="text-gray-500 text-sm">ID Proof Number</label>
-          <input type="text" name="id_number" placeholder="Enter ID number" class="w-full border rounded px-4 py-2 font-semibold" required />
-        </div>
+      <!-- Full Name -->
+      <div>
+        <label class="text-gray-500 text-sm">Full Name</label>
+        <input type="text" name="full_name" value="{{ form.full_name.value }}" placeholder="Enter full name" class="w-full border rounded px-4 py-2" required />
+      </div>
+
+      <!-- Mobile Number -->
+      <div>
+        <label class="text-gray-500 text-sm">Mobile Number</label>
+        <input type="text" name="mobile_number" value="{{ form.mobile_number.value }}" placeholder="Enter mobile number" class="w-full border rounded px-4 py-2" required />
+      </div>
+
+      <!-- D.O.B -->
+      <div>
+        <label class="text-gray-500 text-sm">Date of Birth</label>
+        <input type="date" name="dob" value="{{ form.dob.value }}" class="w-full border rounded px-4 py-2" required />
+      </div>
+
+      <!-- State -->
+      <div>
+        <label class="text-gray-500 text-sm">State</label>
+        <select name="state" class="w-full border rounded px-4 py-2" required>
+          <option value="">Select State</option>
+          <option value="Kerala" {% if form.state.value == "Kerala" %}selected{% endif %}>Kerala</option>
+          <option value="Tamil Nadu" {% if form.state.value == "Tamil Nadu" %}selected{% endif %}>Tamil Nadu</option>
+          <option value="Karnataka" {% if form.state.value == "Karnataka" %}selected{% endif %}>Karnataka</option>
+          <option value="Maharashtra" {% if form.state.value == "Maharashtra" %}selected{% endif %}>Maharashtra</option>
+        </select>
+      </div>
+
+      <!-- Address -->
+      <div class="md:col-span-2">
+        <label class="text-gray-500 text-sm">Address</label>
+        <textarea name="address" rows="3" class="w-full border rounded px-4 py-2" required>{{ form.address.value }}</textarea>
+      </div>
+
+      <!-- ID Proof -->
+      <div>
+        <label class="text-gray-500 text-sm">ID Proof</label>
+        <select name="id_proof" class="w-full border rounded px-4 py-2" required>
+          <option value="">Select ID</option>
+          <option value="Aadhar" {% if form.id_proof.value == "Aadhar" %}selected{% endif %}>Aadhar</option>
+          <option value="Voter ID" {% if form.id_proof.value == "Voter ID" %}selected{% endif %}>Voter ID</option>
+          <option value="Passport" {% if form.id_proof.value == "Passport" %}selected{% endif %}>Passport</option>
+        </select>
+      </div>
+
+      <!-- ID Number -->
+      <div>
+        <label class="text-gray-500 text-sm">ID Number</label>
+        <input type="text" name="id_number" value="{{ form.id_number.value }}" placeholder="Enter ID number" class="w-full border rounded px-4 py-2" required />
       </div>
 
       <!-- Buttons -->
-      <div class="col-span-1 md:col-span-2 flex justify-center gap-6 mt-6">
+      <div class="md:col-span-2 flex justify-center gap-6 mt-6">
         <button type="reset" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Edit</button>
         <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Submit</button>
       </div>

@@ -23,19 +23,18 @@ class UserRegistration(models.Model):
 
 #PROFILE EDIT AND DETAILS ADDING
 
-class CivicUser(models.Model):
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     mobile_number = models.CharField(max_length=15)
-    email = models.EmailField()
     dob = models.DateField()
-    password = models.CharField(max_length=128)
-    state = models.CharField(max_length=50)
+    state = models.CharField(max_length=100)
     address = models.TextField()
     id_proof = models.CharField(max_length=50)
-    id_number = models.CharField(max_length=50)
+    id_number = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.full_name
+        return self.user.email
 
 
 
