@@ -505,3 +505,22 @@ def delete_account_view(request):
         return redirect("home")
 
     return render(request, "delete_account.html")
+
+
+# ================================
+#         ADMINOVER  FUNCTIONS
+# ================================
+# from django.utils.timezone import now
+# @login_required
+# @user_passes_test(lambda u: u.is_staff or u.is_superuser)
+# def adminover(request):
+#     now_ = now()
+#     start_of_month = now_.replace(day=1)
+
+#     context = {
+#         'this_month_count': Complaint.objects.filter(created_at__gte=start_of_month).count(),
+#         'verified_count': Complaint.objects.filter(status='Verified').count(),
+#         'pending_count': Complaint.objects.filter(status='Pending').count(),
+#         'rejected_count': Complaint.objects.filter(status='Rejected').count(),
+#     }
+#     return render(request, 'adminover.html', context)

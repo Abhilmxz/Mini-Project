@@ -29,9 +29,10 @@
           </a>
         </nav>
         <div class="mt-auto">
-          <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center gap-2">
-            <span>⚙️</span>{{ request.user.username }}
-          </button>
+          <a href="/admin/auth/user/{{ request.user.id }}/change/" 
+        class="bg-blue-500 text-white flex items-center justify-center space-x-2 py-2 rounded font-semibold hover:bg-blue-600 transition">
+        <span>⚙️</span> <span>{{ request.user.username }}</span>
+      </a>
         </div>
       </aside>
 
@@ -53,7 +54,7 @@
                   <th class="py-3 px-6 text-left">Actions</th>
                 </tr>
               </thead>
-              <tbody class="text-gray-700 text-sm font-light">
+              <tbody id="userTableBody" class="text-gray-700 text-sm font-light">
                 {% for user in users %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
                   <td class="py-3 px-6 text-left font-bold">{{ user.full_name }}</td>
@@ -84,9 +85,51 @@
                 {% endfor %}
               </tbody>
             </table>
+            <div id="pagination-buttons" class="mt-6 flex justify-center gap-2"></div>
           </div>
         </div>
       </main>
     </div>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const rows = Array.from(document.querySelectorAll("#userTableBody tr"));
+    const rowsPerPage = 5;
+    const paginationContainer = document.getElementById("pagination-buttons");
+    let currentPage = 1;
+
+    function displayRows(page) {
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+
+      rows.forEach((row, index) => {
+        row.style.display = index >= start && index < end ? "" : "none";
+      });
+
+      generatePaginationButtons();
+    }
+
+    function generatePaginationButtons() {
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+      paginationContainer.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = `px-3 py-1 rounded ${
+          i === currentPage
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+        }`;
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          displayRows(currentPage);
+        });
+        paginationContainer.appendChild(btn);
+      }
+    }
+
+    displayRows(currentPage);
+  });
+</script>
   </body>
 </html>
