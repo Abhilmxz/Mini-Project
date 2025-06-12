@@ -113,134 +113,125 @@
 
   <!-- JavaScript -->
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const table = document.getElementById("complaints-table");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const rowsPerPage = 5;
-    let currentPage = 1;
-    let sortState = { column: null, direction: 'asc' };
-    let filteredRows = [...rows];
+document.addEventListener("DOMContentLoaded", () => {
+  const table = document.getElementById("complaints-table");
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const rowsPerPage = 5;
+  let currentPage = 1;
+  let sortState = { column: null, direction: 'asc' };
+  let filteredRows = [...rows];
 
-    const paginate = (page) => {
-      tbody.innerHTML = '';
-      const start = (page - 1) * rowsPerPage;
-      const paginated = filteredRows.slice(start, start + rowsPerPage);
-      paginated.forEach(row => tbody.appendChild(row));
-      renderPagination(filteredRows.length);
-    };
+  const paginate = (page) => {
+    tbody.innerHTML = '';
+    const start = (page - 1) * rowsPerPage;
+    const paginated = filteredRows.slice(start, start + rowsPerPage);
+    paginated.forEach(row => tbody.appendChild(row));
+    renderPagination(filteredRows.length);
+  };
 
-    const renderPagination = (total) => {
-      const totalPages = Math.ceil(total / rowsPerPage);
-      const container = document.getElementById("pagination-buttons");
-      container.innerHTML = '';
+  const renderPagination = (total) => {
+    const totalPages = Math.ceil(total / rowsPerPage);
+    const container = document.getElementById("pagination-buttons");
+    container.innerHTML = '';
 
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement("button");
-        btn.textContent = i;
-        btn.className = `px-3 py-1 rounded text-sm font-medium 
-          ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
-        btn.addEventListener("click", () => {
-          currentPage = i;
-          paginate(currentPage);
-        });
-        container.appendChild(btn);
-      }
-    };
-
-    const sortTable = (colIndex, type, forceDirection = null) => {
-      const direction = forceDirection || ((sortState.column === colIndex && sortState.direction === 'asc') ? 'desc' : 'asc');
-      sortState = { column: colIndex, direction };
-
-      filteredRows.sort((a, b) => {
-        const aText = a.children[colIndex].textContent.trim();
-        const bText = b.children[colIndex].textContent.trim();
-
-        if (type === 'date') {
-          const toDate = (str) => {
-            const [d, m, y] = str.split('-').map(Number);
-            return new Date(y, m - 1, d);
-          };
-          return direction === 'asc' ? toDate(aText) - toDate(bText) : toDate(bText) - toDate(aText);
-        } else {
-          return direction === 'asc' ? aText.localeCompare(bText) : bText.localeCompare(aText);
-        }
-      });
-
-      currentPage = 1;
-      paginate(currentPage);
-    };
-
-    const filterType = (value) => {
-      if (!value) {
-        filteredRows = [...rows];
-      } else {
-        filteredRows = rows.filter(row =>
-          row.children[4].textContent.trim().toLowerCase() === value.toLowerCase()
-        );
-      }
-
-      // Re-apply sorting after filtering
-      if (sortState.column !== null) {
-        sortTable(sortState.column, 'date', sortState.direction);
-      } else {
-        currentPage = 1;
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      btn.className = `px-3 py-1 rounded text-sm font-medium 
+        ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
+      btn.addEventListener("click", () => {
+        currentPage = i;
         paginate(currentPage);
-      }
-    };
+      });
+      container.appendChild(btn);
+    }
+  };
 
-    // Sort dropdown
-    document.getElementById("sort-date").addEventListener("change", (e) => {
-      const value = e.target.value;
-      if (value === "newest") {
-        sortTable(0, 'date', 'desc');
-      } else if (value === "oldest") {
-        sortTable(0, 'date', 'asc');
+  const sortTable = (colIndex, type, forceDirection = null) => {
+    const direction = forceDirection || ((sortState.column === colIndex && sortState.direction === 'asc') ? 'desc' : 'asc');
+    sortState = { column: colIndex, direction };
+
+    filteredRows.sort((a, b) => {
+      const aText = a.children[colIndex].textContent.trim();
+      const bText = b.children[colIndex].textContent.trim();
+
+      if (type === 'date') {
+        const [d1, m1, y1] = aText.split('-').map(Number);
+        const [d2, m2, y2] = bText.split('-').map(Number);
+        const dateA = new Date(y1, m1 - 1, d1);
+        const dateB = new Date(y2, m2 - 1, d2);
+        return direction === 'asc' ? dateA - dateB : dateB - dateA;
+      } else {
+        return direction === 'asc' ? aText.localeCompare(bText) : bText.localeCompare(aText);
       }
     });
 
-    // Filter dropdown
-    document.getElementById("filter-type").addEventListener("change", (e) => filterType(e.target.value));
-
-    // Initial display
+    currentPage = 1;
     paginate(currentPage);
+  };
+
+  const filterType = (value) => {
+    filteredRows = !value
+      ? [...rows]
+      : rows.filter(row =>
+          row.children[4].textContent.trim().toLowerCase() === value.toLowerCase()
+        );
+
+    if (sortState.column !== null) {
+      sortTable(sortState.column, 'date', sortState.direction);
+    } else {
+      currentPage = 1;
+      paginate(currentPage);
+    }
+  };
+
+  // Dropdown events
+  document.getElementById("sort-date").addEventListener("change", (e) => {
+    const value = e.target.value;
+    if (value === "newest") sortTable(0, 'date', 'desc');
+    if (value === "oldest") sortTable(0, 'date', 'asc');
   });
 
+  document.getElementById("filter-type").addEventListener("change", (e) => filterType(e.target.value));
 
-  // Handle Reject Button Click
-document.querySelectorAll(".reject-btn").forEach(button => {
-  button.addEventListener("click", () => {
-    const complaintId = button.getAttribute("data-id");
+  // Initial render
+  paginate(currentPage);
 
-    // Optional: Add confirmation
-    if (!confirm("Are you sure you want to reject and delete this complaint?")) return;
+  // Reject complaint button
+  document.querySelectorAll(".reject-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const complaintId = button.getAttribute("data-id");
+      if (!confirm("Are you sure you want to reject and delete this complaint?")) return;
 
-    // Send a DELETE request to the backend (optional: only if needed)
-    fetch(`/admin/complaints/${complaintId}/reject/`, {
-      method: "POST",
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}',
-      },
-    }).then(response => {
-      if (response.ok) {
-        // Remove the row from the table
-        const row = button.closest("tr");
-        row.remove();
+      fetch(`/reject_complaint_ajax/${complaintId}/`, {
+        method: "POST",
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const row = button.closest("tr");
+          row.remove();
 
-        // Refresh pagination
-        const table = document.getElementById("complaints-table");
-        const allRows = Array.from(table.querySelectorAll("tbody tr"));
-        rows.length = 0;
-        rows.push(...allRows);
-        filteredRows = [...rows];
-        paginate(currentPage);
-      } else {
-        alert("Failed to reject complaint.");
-      }
+          // Rebuild rows and re-render
+          const updatedRows = Array.from(tbody.querySelectorAll("tr"));
+          rows.length = 0;
+          rows.push(...updatedRows);
+          filteredRows = [...rows];
+          paginate(currentPage);
+        } else {
+          alert("Failed to reject complaint.");
+        }
+      }).catch(error => {
+        console.error("Error:", error);
+        alert("Server error while rejecting complaint.");
+      });
     });
   });
 });
-
 </script>
 </body>
 </html>

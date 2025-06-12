@@ -23,8 +23,7 @@ urlpatterns = [
 
     path("delete-account/", delete_account_view, name="delete_account"),
     path('logout/', views.logout_view, name='logout'),
-    # path('form/', views.civic_form_view, name='civic_form'),
-    # path('form/success/', views.success_view, name='success'),
+    
     
 
     # Complaint Submission (User)
@@ -38,10 +37,11 @@ urlpatterns = [
     # Admin Views
     path('adminover/', views.adminover, name='adminover'),
     path('adminpanel/user/delete/<int:user_id>/', views.delete_user, name='delete_user'),
-    path('adminpanel/users/', views.user_list, name='user_list'),  # This line is critical
+    path('adminpanel/users/', views.user_list, name='user_list'),
     path('adminpanel/user/edit/<int:user_id>/', views.edit_user, name='edit_user'),
     path('admin_comp/', views.admin_complaints_view, name='admin_comp'),
     path('complaint/<int:pk>/status/<str:status>/', views.update_complaint_status, name='update_complaint_status'),
+    path('reject_complaint_ajax/<int:pk>/', views.reject_complaint_ajax, name='reject_complaint_ajax'),
     path('admin/complaints/<int:pk>/edit/', views.edit_admin_complaint, name='admin_edit_complaint'),
 
     # Admin: User Management & Feedback

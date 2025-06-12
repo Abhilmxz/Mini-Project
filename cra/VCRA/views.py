@@ -444,7 +444,7 @@ def admin_complaints_view(request):
     complaints = Complaint.objects.all().order_by('-created_at')
     return render(request, 'admin_complaints.html', {'complaints': complaints})
 
-
+#ADMIN REJECT COMPLAINT
 @csrf_exempt
 def reject_complaint_ajax(request, pk):
     if request.method == "POST":
@@ -508,7 +508,7 @@ def delete_account_view(request):
 
 
 # ================================
-#         ADMINOVER  FUNCTIONS
+#   ADMINOVER  REAL TIME GRAPH
 # ================================
 # from django.utils.timezone import now
 # @login_required

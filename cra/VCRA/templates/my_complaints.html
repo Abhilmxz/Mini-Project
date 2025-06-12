@@ -41,6 +41,18 @@
               <a href="{{ complaint.proof.url }}" class="text-blue-500 underline" target="_blank">View File</a>
             </p>
           {% endif %}
+
+          <!-- Complaint Status Badge -->
+          <div class="mt-3">
+            {% if complaint.status == "accepted" %}
+              <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Accepted</span>
+            {% elif complaint.status == "rejected" %}
+              <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">Rejected</span>
+            {% else %}
+              <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Pending</span>
+            {% endif %}
+          </div>
+
         </li>
       {% empty %}
         <li class="text-center text-gray-500">You haven’t submitted any complaints yet.</li>
