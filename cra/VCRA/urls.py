@@ -32,7 +32,9 @@ urlpatterns = [
     path('my_complaints/', views.my_complaints, name='my_complaints'),
     path('proof/<int:pk>/', views.view_proof, name='view_proof'),
     path('complaint/edit/<int:complaint_id>/', views.edit_complaint, name='edit_complaint'),
-    path('complaint/delete/<int:complaint_id>/', views.delete_complaint, name='delete_complaint'),
+    path('complaints/<int:complaint_id>/delete/', views.delete_complaint, name='delete_complaint'),
+
+
 
     # Admin Views
     path('adminover/', views.adminover, name='adminover'),

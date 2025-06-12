@@ -343,6 +343,7 @@ def view_proof(request, pk):
 @login_required
 def edit_complaint(request, complaint_id):
     complaint = get_object_or_404(Complaint, pk=complaint_id, user=request.user)
+    
     if request.method == 'POST':
         form = ComplaintForm(request.POST, request.FILES, instance=complaint)
         if form.is_valid():
@@ -351,7 +352,12 @@ def edit_complaint(request, complaint_id):
             return redirect('my_complaints')
     else:
         form = ComplaintForm(instance=complaint)
-    return render(request, 'edit_complaint.html', {'form': form})
+
+    
+    return render(request, 'edit_complaint.html', {
+        'form': form,
+        'complaint': complaint,
+    })
 
 
 @login_required
@@ -360,8 +366,8 @@ def delete_complaint(request, complaint_id):
     if request.method == 'POST':
         complaint.delete()
         messages.success(request, "Complaint deleted successfully.")
-        return redirect('my_complaints')
-    return render(request, 'delete_confirm.html', {'complaint': complaint})
+        return redirect('my_complaints')  # adjust this to your view name
+    return redirect('edit_complaint', complaint_id=complaint.id)
 
 
 # ================================
