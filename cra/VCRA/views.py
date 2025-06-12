@@ -485,6 +485,16 @@ def edit_admin_complaint(request, pk):
 
 
 
+# ================================
+#        ADMIN PROFILE
+# ================================
+
+@login_required
+def admin_profile(request):
+    return render(request, 'admin_profile.html', {'admin_user': request.user})
+
+
+
 
 
 #USER ACCOUNT DELETION

@@ -50,6 +50,8 @@ urlpatterns = [
     path('user_manage/', views.user_manage, name='user_manage'),
     path('submit-feedback/', views.submit_feedback, name='submit_feedback'),
     path('adminpanel/feedback/', views.feedback_admin_view, name='feedback'),
+    path('admin/profile/', views.admin_profile, name='admin_profile')
+
 
 ]
 

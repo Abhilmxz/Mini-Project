@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from VCRA import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('VCRA.urls')),
+    path('admin-profile/', views.admin_profile, name='admin_profile'),  # ✅ Your custom admin profile page
 ]

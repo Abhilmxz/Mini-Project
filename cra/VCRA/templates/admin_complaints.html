@@ -29,9 +29,9 @@
         </a>
       </nav>
       <div class="mt-auto">
-        <a href="/admin/auth/user/{{ request.user.id }}/change/" 
-        class="bg-blue-500 text-white flex items-center justify-center space-x-2 py-2 rounded font-semibold hover:bg-blue-600 transition">
-        <span>⚙️</span> <span>{{ request.user.username }}</span>
+        <a href="{% url 'admin_profile' %}"
+       class="bg-blue-500 text-white flex items-center justify-center space-x-2 py-2 rounded font-semibold hover:bg-blue-600 transition">
+      <span>⚙️</span> <span>{{ request.user.username }}</span>
       </a>
       </div>
     </aside>
