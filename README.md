@@ -72,15 +72,3 @@ Includes forgot-password flow and new user sign-up.
    - Communicate with users
 
 ---
-
-## 📂 Project Structure
-
-civiceye/
-├── templates/
-│ └── login.html # Tailwind-powered login page
-├── forms.py # Custom LoginForm (email or username)
-├── views.py # Login logic with smart authentication
-├── urls.py # URL routing
-├── static/ # Static assets (CSS, JS, images)
-├── requirements.txt # Python dependencies
-└── README.md # You're here!
