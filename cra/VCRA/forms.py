@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Feedback
 from .models import UserProfile
+from .models import ContactMessage
 
 class UserRegistrationForm(forms.ModelForm):
     class Meta:
@@ -21,9 +22,15 @@ class UserRegistrationForm(forms.ModelForm):
         return email
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))
-
+    email_or_username = forms.CharField(
+        label="Email or Username",
+        widget=forms.TextInput(attrs={'placeholder': 'Email or Username'})
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'})
+    )
+    
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=254)
     
@@ -78,3 +85,11 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['name', 'email', 'message']  # use message, not feedback
+
+
+#contact message save
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'message']

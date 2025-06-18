@@ -39,26 +39,73 @@
     </aside>
 
     <!-- Main Content (Feedback List) -->
-<main class="flex-1 p-8 overflow-y-auto">
-  <div class="bg-white shadow-lg rounded-lg p-6">
-    <h2 class="text-2xl font-bold text-blue-600 mb-6">User Feedback</h2>
+    <main class="flex-1 p-8 overflow-y-auto">
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-blue-600 mb-6">User Feedback</h2>
 
-    {% if feedback_entries %}
-  <h2 class="text-xl font-bold mb-4">User Feedback</h2>
-  <div class="space-y-4">
-    {% for feedback in feedback_entries %}
-      <div class="bg-gray-100 p-4 rounded shadow">
-        <p class="font-semibold">{{ feedback.name }} ({{ feedback.email }})</p>
-        <p class="text-gray-600 text-sm">{{ feedback.created_at }}</p>
-        <p class="mt-2">{{ feedback.message }}</p>
+        {% if feedback_entries %}
+          <div id="feedbackContainer" class="space-y-4">
+            {% for feedback in feedback_entries %}
+              <div class="feedback-card bg-gray-100 p-4 rounded shadow">
+                <p class="font-semibold">{{ feedback.name }} ({{ feedback.email }})</p>
+                <p class="text-gray-600 text-sm">{{ feedback.created_at }}</p>
+                <p class="mt-2">{{ feedback.message }}</p>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination Buttons (Client-Side) -->
+          <div id="pagination-buttons" class="mt-6 flex justify-center gap-2"></div>
+        {% else %}
+          <p class="text-gray-500">No feedback submitted yet.</p>
+        {% endif %}
       </div>
-    {% endfor %}
+    </main>
   </div>
-{% else %}
-  <p class="text-gray-500">No feedback submitted yet.</p>
-{% endif %}
-  </div>
-</main>
-  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const feedbackCards = Array.from(document.querySelectorAll(".feedback-card"));
+      const rowsPerPage = 5;
+      const paginationContainer = document.getElementById("pagination-buttons");
+      let currentPage = 1;
+
+      function displayFeedbackPage(page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        feedbackCards.forEach((card, index) => {
+          card.style.display = index >= start && index < end ? "block" : "none";
+        });
+
+        generatePaginationButtons();
+      }
+
+      function generatePaginationButtons() {
+        const totalPages = Math.ceil(feedbackCards.length / rowsPerPage);
+        paginationContainer.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = i;
+          btn.className = `px-3 py-1 rounded ${
+            i === currentPage
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+          }`;
+          btn.addEventListener("click", () => {
+            currentPage = i;
+            displayFeedbackPage(currentPage);
+          });
+          paginationContainer.appendChild(btn);
+        }
+      }
+
+      // Only paginate if necessary
+      if (feedbackCards.length > rowsPerPage) {
+        displayFeedbackPage(currentPage);
+      }
+    });
+  </script>
 </body>
 </html>

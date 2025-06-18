@@ -23,6 +23,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Complaint
 from django.contrib.auth import logout
+from .forms import ContactForm
 
 import time
 import secrets
@@ -63,9 +64,17 @@ def logout_view(request):
 def about_view(request):
     return render(request, 'about.html')
 
-def contact_view(request):
-    return render(request, 'contact.html')
 
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "✅ Your message has been sent successfully!")
+            return redirect('contact') 
+    else:
+        form = ContactForm()
+    return render(request, 'contact.html', {'form': form})
 
 # ================================
 #       USER REGISTRATION
@@ -112,49 +121,46 @@ def register(request):
 #           LOGIN VIEWS
 # ================================
 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email'].strip()
-            password = form.cleaned_data['password']
-            user_obj = User.objects.filter(email__iexact=email).first()
+        email_or_username = request.POST.get('email_or_username', '').strip()
+        password = request.POST.get('password', '')
+
+        if '@' in email_or_username:
+            # Treat input as email
+            user_obj = User.objects.filter(email__iexact=email_or_username).first()
             if user_obj:
                 user = authenticate(request, username=user_obj.username, password=password)
-                if user:
-                    login(request, user)
-                    return redirect('homelog')
-            form.add_error(None, 'Invalid email or password')
+            else:
+                messages.error(request, 'Invalid email or password.')
+                form = LoginForm()
+                return render(request, 'login.html', {'form': form})
+        else:
+            # Treat input as username
+            user = authenticate(request, username=email_or_username, password=password)
+
+        if user is not None:
+            login(request, user)
+            if user.is_staff or user.is_superuser:
+                return redirect('/adminover/')
+            else:
+                return redirect('homelog')
+
+        messages.error(request, 'Invalid email or password.')
+        form = LoginForm()
+        return render(request, 'login.html', {'form': form})
+
     else:
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
 
 
-def user_login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('homelog')
-        else:
-            messages.error(request, 'Invalid email or password.')
-    return redirect('login')
-
-
-def admin_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_staff:
-            login(request, user)
-            return redirect('/adminover/')
-        else:
-            messages.error(request, 'Invalid admin credentials.')
-    return redirect('login')
 
 
 def homelog(request):

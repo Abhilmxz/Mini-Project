@@ -3,68 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CivicEye Profile</title>
+  <title>CivicEye - Profile</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white min-h-screen flex items-center justify-center px-4">
-  <div class="w-full max-w-6xl bg-white border border-gray-300 shadow-md p-8 rounded-lg">
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Top Nav with Back Button -->
+  <div class="bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
+    <a href="{% url 'homelog' %}" class="text-sky-600 hover:underline font-semibold flex items-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Home
+    </a>
+    <h1 class="text-xl font-bold text-gray-800">Your Profile</h1>
+    <span></span> <!-- placeholder to center title -->
+  </div>
+
+  <!-- Profile Layout -->
+  <div class="max-w-6xl mx-auto my-10 bg-white rounded-lg shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-4">
     
-    <!-- Back Button -->
-    <div class="mb-6">
-      <button type="button" onclick="history.back()" class="text-sky-600 hover:underline font-semibold flex items-center gap-2">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back
-      </button>
+    <!-- Sidebar -->
+    <div class="bg-gray-100 p-6 flex flex-col items-center gap-4 md:items-start">
+      <img src="https://cdn-icons-png.flaticon.com/512/10799/10799692.png" alt="Avatar" class="h-20 w-20 rounded-full" />
+      <div class="text-center md:text-left">
+        <h2 class="text-xl font-semibold text-gray-800">{{ user.first_name }} {{ user.last_name }}</h2>
+        <p class="text-sm text-gray-500">{{ user.email }}</p>
+      </div>
+
+      <nav class="mt-6 w-full">
+        
+      </nav>
     </div>
 
-    <!-- Logo -->
-    <div class="text-center mb-10">
-      <h1 class="text-4xl font-bold text-gray-800">
-        <span class="inline-flex items-center gap-2">
-          <img src="https://cdn-icons-png.flaticon.com/512/10799/10799692.png" class="h-8 inline" />
-          <span class="text-gray-700">Civic</span><span class="text-sky-500">EYE</span>
-        </span>
-      </h1>
-    </div>
-
-    <!-- Form -->
-    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Profile Form -->
+    <form method="POST" class="md:col-span-3 p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
       {% csrf_token %}
 
-      <!-- Email and Password (Read-only) -->
+      <!-- Email (readonly) -->
       <div>
-        <label class="text-gray-500 text-sm">Email ID</label>
-        <input type="email" class="w-full border rounded px-4 py-2 bg-gray-100" value="{{ user.email }}" readonly />
+        <label class="text-gray-600 text-sm font-medium">Email</label>
+        <input type="email" class="w-full mt-1 px-4 py-2 bg-gray-100 border rounded" value="{{ user.email }}" readonly />
       </div>
+
+      <!-- Password (masked) -->
       <div>
-        <label class="text-gray-500 text-sm">Password</label>
-        <input type="password" class="w-full border rounded px-4 py-2 bg-gray-100" value="********" readonly />
+        <label class="text-gray-600 text-sm font-medium">Password</label>
+        <input type="password" class="w-full mt-1 px-4 py-2 bg-gray-100 border rounded" value="********" readonly />
       </div>
 
       <!-- Full Name -->
       <div>
-        <label class="text-gray-500 text-sm">Full Name</label>
-        <input type="text" name="full_name" value="{{ form.full_name.value }}" placeholder="Enter full name" class="w-full border rounded px-4 py-2" required />
+        <label class="text-gray-600 text-sm font-medium">Full Name</label>
+        <input type="text" name="full_name" class="w-full mt-1 px-4 py-2 border rounded" value="{{ form.full_name.value }}" placeholder="Enter full name" required />
       </div>
 
       <!-- Mobile Number -->
       <div>
-        <label class="text-gray-500 text-sm">Mobile Number</label>
-        <input type="text" name="mobile_number" value="{{ form.mobile_number.value }}" placeholder="Enter mobile number" class="w-full border rounded px-4 py-2" required />
+        <label class="text-gray-600 text-sm font-medium">Mobile Number</label>
+        <input type="text" name="mobile_number" class="w-full mt-1 px-4 py-2 border rounded" value="{{ form.mobile_number.value }}" placeholder="Enter mobile number" required />
       </div>
 
-      <!-- D.O.B -->
+      <!-- DOB -->
       <div>
-        <label class="text-gray-500 text-sm">Date of Birth</label>
-        <input type="date" name="dob" value="{{ form.dob.value }}" class="w-full border rounded px-4 py-2" required />
+        <label class="text-gray-600 text-sm font-medium">Date of Birth</label>
+        <input type="date" name="dob" class="w-full mt-1 px-4 py-2 border rounded" value="{{ form.dob.value }}" required />
       </div>
 
       <!-- State -->
       <div>
-        <label class="text-gray-500 text-sm">State</label>
-        <select name="state" class="w-full border rounded px-4 py-2" required>
+        <label class="text-gray-600 text-sm font-medium">State</label>
+        <select name="state" class="w-full mt-1 px-4 py-2 border rounded" required>
           <option value="">Select State</option>
           <option value="Kerala" {% if form.state.value == "Kerala" %}selected{% endif %}>Kerala</option>
           <option value="Tamil Nadu" {% if form.state.value == "Tamil Nadu" %}selected{% endif %}>Tamil Nadu</option>
@@ -75,14 +84,14 @@
 
       <!-- Address -->
       <div class="md:col-span-2">
-        <label class="text-gray-500 text-sm">Address</label>
-        <textarea name="address" rows="3" class="w-full border rounded px-4 py-2" required>{{ form.address.value }}</textarea>
+        <label class="text-gray-600 text-sm font-medium">Address</label>
+        <textarea name="address" rows="3" class="w-full mt-1 px-4 py-2 border rounded" required>{{ form.address.value }}</textarea>
       </div>
 
       <!-- ID Proof -->
       <div>
-        <label class="text-gray-500 text-sm">ID Proof</label>
-        <select name="id_proof" class="w-full border rounded px-4 py-2" required>
+        <label class="text-gray-600 text-sm font-medium">ID Proof</label>
+        <select name="id_proof" class="w-full mt-1 px-4 py-2 border rounded" required>
           <option value="">Select ID</option>
           <option value="Aadhar" {% if form.id_proof.value == "Aadhar" %}selected{% endif %}>Aadhar</option>
           <option value="Voter ID" {% if form.id_proof.value == "Voter ID" %}selected{% endif %}>Voter ID</option>
@@ -92,14 +101,14 @@
 
       <!-- ID Number -->
       <div>
-        <label class="text-gray-500 text-sm">ID Number</label>
-        <input type="text" name="id_number" value="{{ form.id_number.value }}" placeholder="Enter ID number" class="w-full border rounded px-4 py-2" required />
+        <label class="text-gray-600 text-sm font-medium">ID Number</label>
+        <input type="text" name="id_number" class="w-full mt-1 px-4 py-2 border rounded" value="{{ form.id_number.value }}" placeholder="Enter ID number" required />
       </div>
 
-      <!-- Buttons -->
-      <div class="md:col-span-2 flex justify-center gap-6 mt-6">
-        <button type="reset" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Edit</button>
-        <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-6 py-2 rounded-md">Submit</button>
+      <!-- Action Buttons -->
+      <div class="md:col-span-2 flex justify-end gap-4 pt-6">
+        <button type="reset" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-6 py-2 rounded-md">Reset</button>
+        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-2 rounded-md">Save Changes</button>
       </div>
     </form>
   </div>

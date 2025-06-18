@@ -9,24 +9,53 @@
   <div class="min-h-screen flex items-center justify-center p-6">
     <div class="max-w-4xl w-full bg-white p-8 rounded-lg shadow-md">
       <h1 class="text-3xl font-bold text-blue-600 mb-6">Contact Us</h1>
-      <form method="post" class="space-y-4">
+
+      <!-- Success message block (optional if using Django messages) -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="mb-4 p-4 text-green-800 bg-green-100 border border-green-300 rounded">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post" action="{% url 'contact' %}" class="space-y-4">
         {% csrf_token %}
         <div>
           <label class="block text-gray-700">Your Name</label>
-          <input type="text" name="name" required class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input
+            type="text"
+            name="name"
+            required
+            placeholder="Enter your name"
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
         <div>
           <label class="block text-gray-700">Email Address</label>
-          <input type="email" name="email" required class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Enter your email address"
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
         <div>
           <label class="block text-gray-700">Message</label>
-          <textarea name="message" rows="5" required class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <textarea
+            name="message"
+            rows="5"
+            required
+            placeholder="Type your message here..."
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></textarea>
         </div>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
           Send Message
         </button>
       </form>
+
       <p class="mt-6 text-sm text-gray-500">We’ll get back to you as soon as possible.</p>
       <div class="mt-6">
         <a href="{% url 'homelog' %}" class="inline-block text-blue-500 hover:text-blue-700 mt-4">← Back to Home</a>
