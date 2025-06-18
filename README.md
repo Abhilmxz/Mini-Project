@@ -39,9 +39,9 @@ Includes forgot-password flow and new user sign-up.
 
 ---
 
-## 🚀 Live Preview (Optional)
+## 🚀 Live Preview
 
-🖥️ Coming Soon: [demo.civiceye.io](http://demo.civiceye.io) *(Replace with real domain when ready)*
+🖥️ Coming Soon
 
 ---
 
