@@ -146,6 +146,10 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            # ✅ Show welcome popup only once
+            request.session['show_welcome_toast'] = True
+
             if user.is_staff or user.is_superuser:
                 return redirect('/adminover/')
             else:
@@ -163,10 +167,14 @@ def login_view(request):
 
 
 
+
 def homelog(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'homelog.html')
+
+    show_toast = request.session.pop('show_welcome_toast', False)
+    return render(request, 'homelog.html', {'show_toast': show_toast})
+
 
 
 # ================================

@@ -8,6 +8,23 @@
 </head>
 
 <body class="bg-gray-100">
+{% if show_toast %}
+<div id="welcome-toast" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-500 z-50">
+  🎉 Welcome back, {{ user.first_name|default:user.username }}!
+</div>
+<script>
+  window.onload = function () {
+    const toast = document.getElementById("welcome-toast");
+    toast.classList.remove("opacity-0");
+    toast.classList.add("opacity-100");
+    setTimeout(() => {
+      toast.classList.remove("opacity-100");
+      toast.classList.add("opacity-0");
+    }, 4000);
+  };
+</script>
+{% endif %}
+
 
     <!-- Navigation Bar -->
     <nav class="bg-white shadow-md">
