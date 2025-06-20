@@ -39,9 +39,9 @@ Includes forgot-password flow and new user sign-up.
 
 ---
 
-## 🚀 Live Preview (Optional)
+## 🚀 Live Preview
 
-🖥️ Coming Soon: [demo.civiceye.io](http://demo.civiceye.io) *(Replace with real domain when ready)*
+🖥️ Coming Soon
 
 ---
 
@@ -58,8 +58,8 @@ Includes forgot-password flow and new user sign-up.
 
 ## 🧠 How It Works
 
-1. Users land on a beautiful login screen
-2. They enter their **email** (for users) or **username** (for admins)
+1. Users land on a beautiful login screen  
+2. They enter their **email** (for users) or **username** (for admins)  
 3. Django authenticates and redirects them:
    - 🔐 Admin → `/adminover/`
    - 👤 User → `homelog`
