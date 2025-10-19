@@ -49,7 +49,7 @@ from .models import (
 # ================================
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
 
 @login_required
 def profile_view(request):
